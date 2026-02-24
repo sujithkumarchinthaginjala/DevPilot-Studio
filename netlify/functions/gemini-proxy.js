@@ -2,58 +2,70 @@ const axios = require('axios');
 
 exports.handler = async (event, context) => {
     const method = (event.httpMethod || '').toUpperCase();
-    console.log(`[Proxy] Request Method: ${method}, Path: ${event.path}`);
+    const path = event.path || '';
 
-    // Handle CORS preflight
+    console.log(`[Gemini Proxy] Incoming: ${method} ${path}`);
+
+    const corsHeaders = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Content-Type': 'application/json'
+    };
+
+    // 1. Handle Preflight
     if (method === 'OPTIONS') {
         return {
             statusCode: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key, anthropic-version',
-                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
-            },
+            headers: corsHeaders,
             body: ''
         };
     }
 
-    // Friendly status for GET
+    // 2. Handle simple GET check
     if (method === 'GET') {
         return {
             statusCode: 200,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
+            headers: corsHeaders,
             body: JSON.stringify({
-                status: 'Gemini Proxy is active',
-                message: 'Please use POST to send prompts',
-                receivedMethod: method
-            }),
+                status: 'Gemini Proxy is Active',
+                info: 'Use POST to generate content',
+                debug: { method, path }
+            })
         };
     }
 
+    // 3. Block other methods
     if (method !== 'POST') {
         return {
             statusCode: 405,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Allow': 'GET, POST, OPTIONS'
-            },
+            headers: corsHeaders,
             body: JSON.stringify({
                 error: 'Method Not Allowed',
-                receivedMethod: method
+                received: method,
+                tip: 'Ensure your app is sending a POST request to this endpoint'
             }),
         };
     }
 
     try {
+        if (!event.body) {
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({ error: 'Missing request body' })
+            };
+        }
+
         const { prompt, systemPrompt, model, max_tokens } = JSON.parse(event.body);
         const apiKey = process.env.GEMINI_API_KEY;
+
         if (!apiKey) {
+            console.error('[Gemini Proxy] Error: GEMINI_API_KEY is not set');
             return {
                 statusCode: 500,
-                body: JSON.stringify({ error: 'GEMINI_API_KEY not configured on server' }),
+                headers: corsHeaders,
+                body: JSON.stringify({ error: 'Server configuration error: Key missing' }),
             };
         }
 
@@ -77,21 +89,15 @@ exports.handler = async (event, context) => {
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model || 'gemini-1.5-flash'}:generateContent?key=${apiKey}`;
 
         const response = await axios.post(apiUrl, geminiBody, {
-            headers: {
-                'Content-Type': 'application/json',
-            }
+            headers: { 'Content-Type': 'application/json' }
         });
 
         const candidate = response.data.candidates?.[0];
         const text = candidate?.content?.parts?.[0]?.text || '';
 
-        // Map back to a structured format similar to what the app expects
         return {
             statusCode: 200,
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
+            headers: corsHeaders,
             body: JSON.stringify({
                 content: text,
                 model: model || 'gemini-1.5-flash',
@@ -99,13 +105,18 @@ exports.handler = async (event, context) => {
             }),
         };
     } catch (error) {
-        console.error('Gemini Proxy Error:', error.response ? error.response.data : error.message);
+        const status = error.response ? error.response.status : 500;
+        const details = error.response ? error.response.data : error.message;
+
+        console.error(`[Gemini Proxy] API Error (${status}):`, JSON.stringify(details));
 
         return {
-            statusCode: error.response ? error.response.status : 500,
+            statusCode: status,
+            headers: corsHeaders,
             body: JSON.stringify({
-                error: 'Failed to communicate with Gemini API',
-                details: error.response ? error.response.data : error.message,
+                error: 'AI Proxy Error',
+                message: error.message,
+                details: details
             }),
         };
     }
