@@ -1,7 +1,27 @@
 const axios = require('axios');
 
 exports.handler = async (event, context) => {
-    // Only allow POST requests
+    // Handle CORS preflight
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS'
+            },
+            body: ''
+        };
+    }
+
+    // Friendly status for GET
+    if (event.httpMethod === 'GET') {
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ status: 'Gemini Proxy is active', message: 'Please use POST to send prompts' }),
+        };
+    }
+
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
@@ -11,8 +31,7 @@ exports.handler = async (event, context) => {
 
     try {
         const { prompt, systemPrompt, model, max_tokens } = JSON.parse(event.body);
-        const apiKey = process.env.GEMINI_API_KEY || 'AIzaSyC2-K3KJ1TfHBe37HfJvRo_Mn8vZQ6z6rs'; // User provided fallback for testing
-
+        const apiKey = process.env.GEMINI_API_KEY;
         if (!apiKey) {
             return {
                 statusCode: 500,
@@ -53,6 +72,7 @@ exports.handler = async (event, context) => {
             statusCode: 200,
             headers: {
                 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify({
                 content: text,
