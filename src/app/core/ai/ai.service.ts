@@ -35,17 +35,17 @@ export class AiService {
         const body = {
             prompt: request.prompt,
             systemPrompt: request.systemPrompt,
-            model: environment.claudeModel,
+            model: environment.geminiModel,
             max_tokens: request.maxTokens ?? 2048,
         };
 
         return this.http
-            .post<ClaudeApiResponse>(environment.claudeApiUrl, body)
+            .post<any>(environment.geminiApiUrl, body)
             .pipe(
-                map((res: ClaudeApiResponse): AIResponse => ({
-                    content: res.content[0]?.text ?? '',
+                map((res: any): AIResponse => ({
+                    content: res.content ?? '',
                     tool: request.tool,
-                    tokens: res.usage?.input_tokens + res.usage?.output_tokens,
+                    tokens: res.usage?.totalTokenCount || 0,
                     model: res.model,
                     timestamp: new Date(),
                 })),
