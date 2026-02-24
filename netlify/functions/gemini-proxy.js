@@ -48,6 +48,8 @@ exports.handler = async (event, context) => {
         };
     }
 
+    let currentModel = 'gemini-1.5-flash';
+
     try {
         if (!event.body) {
             return {
@@ -57,7 +59,9 @@ exports.handler = async (event, context) => {
             };
         }
 
-        const { prompt, systemPrompt, model, max_tokens } = JSON.parse(event.body);
+        const body = JSON.parse(event.body);
+        const { prompt, systemPrompt, max_tokens } = body;
+        currentModel = body.model || 'gemini-1.5-flash';
         const apiKey = process.env.GEMINI_API_KEY;
 
         if (!apiKey) {
@@ -86,9 +90,9 @@ exports.handler = async (event, context) => {
             }
         };
 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${model || 'gemini-1.5-flash'}:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent?key=${apiKey}`;
 
-        console.log(`[Gemini Proxy] Calling: https://generativelanguage.googleapis.com/v1/models/${model || 'gemini-1.5-flash'}:generateContent`);
+        console.log(`[Gemini Proxy] Calling: https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent`);
 
         const response = await axios.post(apiUrl, geminiBody, {
             headers: { 'Content-Type': 'application/json' }
@@ -102,15 +106,14 @@ exports.handler = async (event, context) => {
             headers: corsHeaders,
             body: JSON.stringify({
                 content: text,
-                model: model || 'gemini-1.5-flash',
+                model: currentModel,
                 usage: response.data.usageMetadata || { totalTokenCount: 0 }
             }),
         };
     } catch (error) {
         const status = error.response ? error.response.status : 500;
         const details = error.response ? error.response.data : error.message;
-        const attemptedModel = model || 'gemini-1.5-flash';
-        const attemptedUrl = `https://generativelanguage.googleapis.com/v1/models/${attemptedModel}:generateContent`;
+        const attemptedUrl = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent`;
 
         console.error(`[Gemini Proxy] API Error (${status}) at ${attemptedUrl}:`, JSON.stringify(details));
 
