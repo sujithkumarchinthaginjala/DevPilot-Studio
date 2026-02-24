@@ -1,0 +1,62 @@
+<div class="tool-view fade-in">
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">Test Generator</h1>
+            <p class="tool-header__desc">
+                Generate comprehensive unit tests for your functions with zero effort.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <div class="tool-panel card">
+            <div class="input-group">
+                <div class="label-row">
+                    <label class="section-label">Source Code</label>
+                    <span class="badge badge-success">Unit Testing</span>
+                </div>
+                <textarea class="textarea textarea-code" placeholder="// Paste the code you want to test here..."
+                    [ngModel]="code()" (ngModelChange)="code.set($event)" [disabled]="loading()"></textarea>
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="generateTests()"
+                    [disabled]="loading() || !code().trim()">
+                    {{ loading() ? 'Generating Tests...' : 'Generate Unit Tests' }}
+                </button>
+            </div>
+
+            <div class="panel-info">
+                <p class="info-text">
+                    Best with: Pure functions, utility classes, or individual components. AI will cover happy paths and
+                    edge cases.
+                </p>
+            </div>
+        </div>
+
+        <div class="tool-results">
+            @if (loading()) {
+            <div class="results-empty card">
+                <app-loading-spinner message="Writing test cases..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">🧪</span>
+                    <h3 class="empty-state__title">No Code Pasted</h3>
+                    <p class="empty-state__desc">
+                        Paste your functions on the left to generate robust test suites.
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

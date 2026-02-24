@@ -1,0 +1,17 @@
+<a [routerLink]="link" class="tool-card-wrapper">
+  <div class="tool-card">
+    <div class="tool-card__icon" [style.background]="gradient">
+      <span class="tool-card__emoji">{{ icon }}</span>
+    </div>
+    <div class="tool-card__body">
+      <div class="tool-card__header">
+        <h3 class="tool-card__title">{{ title }}</h3>
+        @if (badge) {
+          <span class="badge" [class]="badgeClass">{{ badge }}</span>
+        }
+      </div>
+      <p class="tool-card__desc">{{ description }}</p>
+    </div>
+    <div class="tool-card__arrow">→</div>
+  </div>
+</a>

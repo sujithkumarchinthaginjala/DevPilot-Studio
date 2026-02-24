@@ -1,0 +1,36 @@
+<header class="header glass">
+    <div class="header__left">
+        <!-- Hamburger toggle -->
+        <button class="header__toggle btn btn-ghost btn-sm" (click)="toggleSidebar()" title="Toggle sidebar">
+            ☰
+        </button>
+
+        <!-- Breadcrumb -->
+        <div class="header__breadcrumb">
+            <span class="header__app-name">DevPilot Studio</span>
+            <span class="header__separator">/</span>
+            <span class="header__tool">{{ activeToolLabel() }}</span>
+        </div>
+    </div>
+
+    <div class="header__center">
+        <!-- AI Status -->
+        <div class="header__status">
+            <span class="header__status-dot"></span>
+            <span class="header__status-label">AI Online</span>
+        </div>
+    </div>
+
+    <div class="header__right">
+        <!-- Usage -->
+        <div class="header__metric">
+            <span class="header__metric-value">{{ totalPrompts() }}</span>
+            <span class="header__metric-label">Prompts</span>
+        </div>
+
+        <!-- New Session -->
+        <a href="/dashboard" class="btn btn-primary btn-sm" (click)="newSession()">
+            <span>+ New Session</span>
+        </a>
+    </div>
+</header>

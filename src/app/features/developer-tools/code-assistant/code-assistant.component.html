@@ -1,0 +1,70 @@
+<div class="tool-view fade-in">
+    <!-- Tool Header -->
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">AI Code Assistant</h1>
+            <p class="tool-header__desc">
+                Let AI analyze, refactor, or improve your code in seconds.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear Session
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <!-- Input Panel -->
+        <div class="tool-panel card">
+            <div class="mode-selector">
+                @for (m of modes; track m.id) {
+                <button class="mode-btn" [class.active]="mode() === m.id" (click)="mode.set(m.id)"
+                    [disabled]="loading()">
+                    <span class="mode-btn__icon">{{ m.icon }}</span>
+                    <span class="mode-btn__label">{{ m.label }}</span>
+                </button>
+                }
+            </div>
+
+            <div class="input-group">
+                <label class="section-label">Paste Your Code</label>
+                <textarea class="textarea textarea-code" placeholder="// Paste your code snippet here..."
+                    [ngModel]="code()" (ngModelChange)="code.set($event)" [disabled]="loading()"></textarea>
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="processCode()"
+                    [disabled]="loading() || !code().trim()">
+                    {{ loading() ? 'Analyzing...' : 'Generate AI Insights' }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Output Panel -->
+        <div class="tool-results">
+            @if (loading()) {
+            <div class="results-empty card">
+                <app-loading-spinner message="Analyzing your code logic..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">🤖</span>
+                    <h3 class="empty-state__title">Ready for Analysis</h3>
+                    <p class="empty-state__desc">
+                        Select a mode and paste your code to see AI magic.
+                    </p>
+                    <div class="empty-state__hints">
+                        <span class="badge badge-cyan">Clean Code</span>
+                        <span class="badge badge-cyan">Performance</span>
+                        <span class="badge badge-cyan">Refactoring</span>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

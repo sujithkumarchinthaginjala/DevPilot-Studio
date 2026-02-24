@@ -1,0 +1,53 @@
+<div class="tool-view fade-in">
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">Meeting Analyzer</h1>
+            <p class="tool-header__desc">
+                Turn unstructured meeting notes into clear summaries, decisions, and action items.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <div class="tool-panel card">
+            <div class="input-group">
+                <label class="section-label">Meeting Notes / Transcript</label>
+                <textarea class="textarea" placeholder="Paste your meeting notes or raw transcript here..."
+                    [ngModel]="notes()" (ngModelChange)="notes.set($event)" [disabled]="loading()"
+                    style="min-height: 300px;"></textarea>
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="analyzeNotes()"
+                    [disabled]="loading() || !notes().trim()">
+                    {{ loading() ? 'Analyzing Notes...' : 'Generate Meeting Insights' }}
+                </button>
+            </div>
+        </div>
+
+        <div class="tool-results">
+            @if (loading()) {
+            <div class="results-empty card">
+                <app-loading-spinner message="Synthesizing meeting insights..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">👥</span>
+                    <h3 class="empty-state__title">Empty Transcript</h3>
+                    <p class="empty-state__desc">
+                        Paste your meeting content to identify key takeaways and follow-ups.
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

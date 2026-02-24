@@ -1,0 +1,74 @@
+<div class="dashboard fade-in">
+    <!-- Welcome Section -->
+    <header class="dashboard__welcome">
+        <div class="dashboard__welcome-content">
+            <h1 class="dashboard__title">
+                Welcome back, <span class="glow-text">Commander</span>.
+            </h1>
+            <p class="dashboard__subtitle">
+                Your AI-powered dev and enterprise workspace is ready. What are we building today?
+            </p>
+        </div>
+        <div class="dashboard__stats">
+            <div class="stat-card">
+                <span class="stat-card__value">{{ store.totalPrompts() }}</span>
+                <span class="stat-card__label">Total Prompts</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-card__value">{{ store.recentHistory().length }}</span>
+                <span class="stat-card__label">Recent Labs</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Developer Tools Section -->
+    <section class="dashboard__section">
+        <div class="section-header">
+            <h2 class="section-title">Developer Intelligence</h2>
+            <a href="/developer-tools/code-assistant" class="btn btn-sm btn-ghost">View All</a>
+        </div>
+        <div class="tool-grid">
+            @for (tool of devTools; track tool.title) {
+            <app-tool-card [icon]="tool.icon" [title]="tool.title" [description]="tool.description" [link]="tool.link"
+                [badge]="tool.badge || ''" [badgeClass]="tool.badgeClass || 'badge-primary'"
+                [gradient]="tool.gradient"></app-tool-card>
+            }
+        </div>
+    </section>
+
+    <!-- Enterprise Tools Section -->
+    <section class="dashboard__section">
+        <div class="section-header">
+            <h2 class="section-title">Enterprise Productivity</h2>
+            <a href="/enterprise-tools/meeting-analyzer" class="btn btn-sm btn-ghost">View All</a>
+        </div>
+        <div class="tool-grid">
+            @for (tool of enterpriseTools; track tool.title) {
+            <app-tool-card [icon]="tool.icon" [title]="tool.title" [description]="tool.description" [link]="tool.link"
+                [badge]="tool.badge || ''" [badgeClass]="tool.badgeClass || 'badge-primary'"
+                [gradient]="tool.gradient"></app-tool-card>
+            }
+        </div>
+    </section>
+
+    <!-- Recent Activity -->
+    @if (store.recentHistory().length > 0) {
+    <section class="dashboard__section">
+        <div class="section-header">
+            <h2 class="section-title">Recent Activity</h2>
+        </div>
+        <div class="history-list card">
+            @for (item of store.recentHistory(); track item.id) {
+            <div class="history-item">
+                <div class="history-item__icon">✦</div>
+                <div class="history-item__body">
+                    <span class="history-item__prompt">{{ item.prompt }}</span>
+                    <span class="history-item__meta">{{ item.tool }} • {{ item.timestamp | date:'shortTime' }}</span>
+                </div>
+                <a [routerLink]="'/' + item.tool" class="btn btn-sm btn-ghost">Revisit</a>
+            </div>
+            }
+        </div>
+    </section>
+    }
+</div>

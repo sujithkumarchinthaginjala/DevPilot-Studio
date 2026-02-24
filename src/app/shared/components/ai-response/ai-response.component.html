@@ -1,0 +1,29 @@
+@if (error) {
+<div class="response-error fade-in">
+    <span class="response-error__icon">⚠️</span>
+    <div>
+        <p class="response-error__title">AI Error</p>
+        <p class="response-error__message">{{ error }}</p>
+    </div>
+</div>
+}
+
+@if (response && !error) {
+<div class="response-container fade-in">
+    <div class="response-header">
+        <div class="response-meta">
+            <span class="badge badge-primary">✦ AI Response</span>
+            @if (response.model) {
+            <span class="response-model">{{ response.model }}</span>
+            }
+            @if (response.tokens) {
+            <span class="response-tokens">{{ response.tokens }} tokens</span>
+            }
+        </div>
+        <button class="btn btn-sm btn-ghost copy-btn" (click)="copyToClipboard()">
+            {{ isCopied ? '✓ Copied!' : '⎘ Copy' }}
+        </button>
+    </div>
+    <div class="response-body" [innerHTML]="formatContent(response.content)"></div>
+</div>
+}
