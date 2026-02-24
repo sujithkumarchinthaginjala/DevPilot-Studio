@@ -73,7 +73,7 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Google Gemini API expects a slightly different structure than Anthropic
+        // Google Gemini API expects system_instruction (snake_case)
         const geminiBody = {
             contents: [
                 {
@@ -81,7 +81,7 @@ exports.handler = async (event, context) => {
                     parts: [{ text: prompt }]
                 }
             ],
-            systemInstruction: systemPrompt ? {
+            system_instruction: systemPrompt ? {
                 parts: [{ text: systemPrompt }]
             } : undefined,
             generationConfig: {
@@ -90,9 +90,9 @@ exports.handler = async (event, context) => {
             }
         };
 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
 
-        console.log(`[Gemini Proxy] Calling: https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent`);
+        console.log(`[Gemini Proxy] Calling: https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent`);
 
         const response = await axios.post(apiUrl, geminiBody, {
             headers: { 'Content-Type': 'application/json' }
@@ -113,7 +113,7 @@ exports.handler = async (event, context) => {
     } catch (error) {
         const status = error.response ? error.response.status : 500;
         const details = error.response ? error.response.data : error.message;
-        const attemptedUrl = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent`;
+        const attemptedUrl = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent`;
 
         console.error(`[Gemini Proxy] API Error (${status}) at ${attemptedUrl}:`, JSON.stringify(details));
 
