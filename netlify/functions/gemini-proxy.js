@@ -1,31 +1,49 @@
 const axios = require('axios');
 
 exports.handler = async (event, context) => {
+    const method = (event.httpMethod || '').toUpperCase();
+    console.log(`[Proxy] Request Method: ${method}, Path: ${event.path}`);
+
     // Handle CORS preflight
-    if (event.httpMethod === 'OPTIONS') {
+    if (method === 'OPTIONS') {
         return {
             statusCode: 200,
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS'
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key, anthropic-version',
+                'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
             },
             body: ''
         };
     }
 
     // Friendly status for GET
-    if (event.httpMethod === 'GET') {
+    if (method === 'GET') {
         return {
             statusCode: 200,
-            body: JSON.stringify({ status: 'Gemini Proxy is active', message: 'Please use POST to send prompts' }),
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            body: JSON.stringify({
+                status: 'Gemini Proxy is active',
+                message: 'Please use POST to send prompts',
+                receivedMethod: method
+            }),
         };
     }
 
-    if (event.httpMethod !== 'POST') {
+    if (method !== 'POST') {
         return {
             statusCode: 405,
-            body: JSON.stringify({ error: 'Method Not Allowed' }),
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Allow': 'GET, POST, OPTIONS'
+            },
+            body: JSON.stringify({
+                error: 'Method Not Allowed',
+                receivedMethod: method
+            }),
         };
     }
 
