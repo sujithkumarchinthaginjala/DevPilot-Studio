@@ -73,26 +73,28 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Google Gemini API expects system_instruction (snake_case)
+        // Highly robust approach: Combine system prompt into user contents
+        // This avoids 400 (unknown field) and 404 (model not found on v1beta)
+        // Match user's requested prompt format
+        const combinedPrompt = systemPrompt
+            ? `System Instruction:\n${systemPrompt}\n\nUser Request:\n${prompt}`
+            : prompt;
+
         const geminiBody = {
             contents: [
                 {
-                    role: 'user',
-                    parts: [{ text: prompt }]
+                    parts: [{ text: combinedPrompt }]
                 }
             ],
-            system_instruction: systemPrompt ? {
-                parts: [{ text: systemPrompt }]
-            } : undefined,
             generationConfig: {
-                maxOutputTokens: max_tokens || 2048,
+                maxOutputTokens: max_tokens ?? 2048,
                 temperature: 0.7,
             }
         };
 
         const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent?key=${apiKey}`;
 
-        console.log(`[Gemini Proxy] Calling: https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent`);
+        console.log(`[Gemini Proxy] Calling stable v1: ${currentModel}`);
 
         const response = await axios.post(apiUrl, geminiBody, {
             headers: { 'Content-Type': 'application/json' }
@@ -124,7 +126,7 @@ exports.handler = async (event, context) => {
                 error: 'AI Proxy Error',
                 message: error.message,
                 status: status,
-                attemptedUrl: attemptedUrl,
+                url: attemptedUrl,
                 details: details
             }),
         };
