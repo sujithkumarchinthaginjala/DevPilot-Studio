@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AiService } from '../../../core/ai/ai.service';
 import { AppStore } from '../../../stores/app.store';
+import { environment } from '../../../../environments/environment';
 import { AIResponse } from '../../../core/ai/ai.model';
 import { buildEmailDrafterPrompt } from '../../../core/ai/prompt-builder';
 import { AiResponseComponent } from '../../../shared/components/ai-response/ai-response.component';
@@ -44,6 +45,8 @@ export class EmailDrafterComponent {
         this.store.setLoading(true);
 
         const { systemPrompt, userPrompt } = buildEmailDrafterPrompt(this.context(), this.tone(), this.purpose());
+        console.log('[EmailDrafter] Sending POST to:', environment.geminiApiUrl);
+        console.log('[EmailDrafter] Payload:', { userPrompt, systemPrompt });
 
         this.aiService.sendPrompt({
             prompt: userPrompt,

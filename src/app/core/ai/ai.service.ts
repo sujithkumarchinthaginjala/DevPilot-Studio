@@ -39,6 +39,7 @@ export class AiService {
             max_tokens: request.maxTokens ?? 2048,
         };
 
+        console.log('[AiService] Sending POST Prompt to:', environment.geminiApiUrl);
         return this.http
             .post<any>(environment.geminiApiUrl, body)
             .pipe(
