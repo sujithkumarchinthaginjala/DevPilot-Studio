@@ -55,6 +55,13 @@ export class AiService {
     }
 
     private handleError(error: HttpErrorResponse): Observable<never> {
+        console.error('[AiService] Error Response:', {
+            status: error.status,
+            statusText: error.statusText,
+            url: error.url,
+            error: error.error
+        });
+
         let message = 'An unexpected error occurred.';
         let code = 'UNKNOWN_ERROR';
 
