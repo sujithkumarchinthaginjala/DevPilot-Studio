@@ -99,9 +99,9 @@ exports.handler = async (event) => {
             }
         };
 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent?key=${apiKey}`;
 
-        console.log(`[Gemini Proxy] Calling model: ${currentModel}`);
+        console.log(`[Gemini Proxy] Calling stable v1: ${currentModel}`);
 
         const response = await axios.post(apiUrl, geminiBody, {
             headers: { 'Content-Type': 'application/json' }
@@ -123,8 +123,9 @@ exports.handler = async (event) => {
     } catch (error) {
         const status = error.response?.status || 500;
         const details = error.response?.data || error.message;
+        const attemptedUrl = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent`;
 
-        console.error('[Gemini Proxy] API Error:', JSON.stringify(details));
+        console.error(`[Gemini Proxy] API Error (${status}) at ${attemptedUrl}:`, JSON.stringify(details));
 
         return {
             statusCode: status,
@@ -132,6 +133,7 @@ exports.handler = async (event) => {
             body: JSON.stringify({
                 error: 'AI Proxy Error',
                 status,
+                url: attemptedUrl,
                 details
             })
         };
