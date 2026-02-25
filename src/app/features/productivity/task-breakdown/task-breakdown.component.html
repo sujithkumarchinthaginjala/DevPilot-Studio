@@ -1,0 +1,62 @@
+<div class="tool-view fade-in">
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">AI Task Breakdown</h1>
+            <p class="tool-header__desc">
+                Convert large, complex goals into manageable, sprint-style micro-tasks.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <div class="tool-panel card">
+            <div class="input-group">
+                <label class="section-label">Your Goal / Big Task</label>
+                <textarea class="textarea"
+                    placeholder="e.g. Build a portfolio website, Prepare for Google Interview, Launch a Side Project..."
+                    [ngModel]="goal()" (ngModelChange)="goal.set($event)" [disabled]="loading()"
+                    style="min-height: 200px;"></textarea>
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="breakdownTask()"
+                    [disabled]="loading() || !goal().trim()">
+                    {{ loading() ? 'Deconstructing...' : 'Breakdown into Micro-Tasks' }}
+                </button>
+            </div>
+
+            <div class="panel-info">
+                <p class="info-text">
+                    AI will identify logical stages, estimated timeframes, and definition of done for each sub-task.
+                </p>
+            </div>
+        </div>
+
+        <div class="tool-results">
+            @if (loading()) {
+            <div class="results-empty card">
+                <app-loading-spinner message="Orchestrating your sprint plan..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">
+                        <i class="bi bi-list-check" style="font-size: 48px;"></i>
+                    </span>
+                    <h3 class="empty-state__title">Goal to Tasks</h3>
+                    <p class="empty-state__desc">
+                        Paste a large objective to see it converted into actionable steps.
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

@@ -35,7 +35,7 @@ export class AiService {
         const body = {
             prompt: request.prompt,
             systemPrompt: request.systemPrompt,
-            model: environment.geminiModel,
+            model: request.model || environment.geminiModel || 'meta-llama/llama-3-70b-instruct',
             max_tokens: request.maxTokens ?? 2048,
         };
 

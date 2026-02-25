@@ -6,7 +6,7 @@
                 Welcome back, <span class="glow-text">Commander</span>.
             </h1>
             <p class="dashboard__subtitle">
-                Your AI-powered dev and enterprise workspace is ready. What are we building today?
+                Your AI Career Operating System is active. Accelerate your professional growth today.
             </p>
         </div>
         <div class="dashboard__stats">
@@ -16,40 +16,25 @@
             </div>
             <div class="stat-card">
                 <span class="stat-card__value">{{ store.recentHistory().length }}</span>
-                <span class="stat-card__label">Recent Labs</span>
+                <span class="stat-card__label">Experiments</span>
             </div>
         </div>
     </header>
 
-    <!-- Developer Tools Section -->
+    @for (group of toolGroups; track group.title) {
     <section class="dashboard__section">
         <div class="section-header">
-            <h2 class="section-title">Developer Intelligence</h2>
-            <a href="/developer-tools/code-assistant" class="btn btn-sm btn-ghost">View All</a>
+            <h2 class="section-title">{{ group.title }}</h2>
         </div>
         <div class="tool-grid">
-            @for (tool of devTools; track tool.title) {
+            @for (tool of group.tools; track tool.title) {
             <app-tool-card [icon]="tool.icon" [title]="tool.title" [description]="tool.description" [link]="tool.link"
                 [badge]="tool.badge || ''" [badgeClass]="tool.badgeClass || 'badge-primary'"
                 [gradient]="tool.gradient"></app-tool-card>
             }
         </div>
     </section>
-
-    <!-- Enterprise Tools Section -->
-    <section class="dashboard__section">
-        <div class="section-header">
-            <h2 class="section-title">Enterprise Productivity</h2>
-            <a href="/enterprise-tools/meeting-analyzer" class="btn btn-sm btn-ghost">View All</a>
-        </div>
-        <div class="tool-grid">
-            @for (tool of enterpriseTools; track tool.title) {
-            <app-tool-card [icon]="tool.icon" [title]="tool.title" [description]="tool.description" [link]="tool.link"
-                [badge]="tool.badge || ''" [badgeClass]="tool.badgeClass || 'badge-primary'"
-                [gradient]="tool.gradient"></app-tool-card>
-            }
-        </div>
-    </section>
+    }
 
     <!-- Recent Activity -->
     @if (store.recentHistory().length > 0) {

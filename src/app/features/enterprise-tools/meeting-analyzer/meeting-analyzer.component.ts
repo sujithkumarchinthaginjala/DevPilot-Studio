@@ -35,6 +35,11 @@ export class MeetingAnalyzerComponent {
         this.response.set(null);
         this.store.setLoading(true);
 
+        // Auto-scroll to results
+        setTimeout(() => {
+            document.getElementById('result-area')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+
         const { systemPrompt, userPrompt } = buildMeetingAnalyzerPrompt(this.notes());
 
         this.aiService.sendPrompt({

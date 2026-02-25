@@ -185,11 +185,40 @@
         top: 0;
         bottom: 0;
         box-shadow: var(--shadow-xl);
+        transform: translateX(0);
+        transition: transform var(--duration-fast) var(--ease-out), width var(--duration-fast) var(--ease-out);
     }
 
     .sidebar--collapsed {
         width: 0;
         border: none;
         overflow: hidden;
+        transform: translateX(-100%);
+    }
+}
+
+.sidebar-backdrop {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .sidebar-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 15;
+        animation: fade-in 0.3s ease-out;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }

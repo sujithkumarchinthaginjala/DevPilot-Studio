@@ -12,6 +12,7 @@ export const routes: Routes = [
                 loadComponent: () =>
                     import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
             },
+            // Developer Tools
             {
                 path: 'developer-tools/code-assistant',
                 loadComponent: () =>
@@ -33,6 +34,43 @@ export const routes: Routes = [
                         (m) => m.TestGeneratorComponent
                     ),
             },
+            // Career Accelerator
+            {
+                path: 'career-tools/resume-optimizer',
+                loadComponent: () =>
+                    import('./features/career-tools/resume-optimizer/resume-optimizer.component').then(
+                        (m) => m.ResumeOptimizerComponent
+                    ),
+            },
+            {
+                path: 'career-tools/linkedin-enhancer',
+                loadComponent: () =>
+                    import('./features/career-tools/linkedin-enhancer/linkedin-enhancer.component').then(
+                        (m) => m.LinkedinEnhancerComponent
+                    ),
+            },
+            {
+                path: 'career-tools/job-analyzer',
+                loadComponent: () =>
+                    import('./features/career-tools/job-analyzer/job-analyzer.component').then(
+                        (m) => m.JobAnalyzerComponent
+                    ),
+            },
+            {
+                path: 'career-tools/mock-interview',
+                loadComponent: () =>
+                    import('./features/career-tools/mock-interview/mock-interview.component').then(
+                        (m) => m.MockInterviewComponent
+                    ),
+            },
+            {
+                path: 'career-tools/career-roadmap',
+                loadComponent: () =>
+                    import('./features/career-tools/career-roadmap/career-roadmap.component').then(
+                        (m) => m.CareerRoadmapComponent
+                    ),
+            },
+            // Enterprise & Productivity
             {
                 path: 'enterprise-tools/meeting-analyzer',
                 loadComponent: () =>
@@ -60,6 +98,28 @@ export const routes: Routes = [
                     import(
                         './features/enterprise-tools/performance-review/performance-review.component'
                     ).then((m) => m.PerformanceReviewComponent),
+            },
+            {
+                path: 'productivity/study-planner',
+                loadComponent: () =>
+                    import('./features/productivity/study-planner/study-planner.component').then(
+                        (m) => m.StudyPlannerComponent
+                    ),
+            },
+            {
+                path: 'productivity/task-breakdown',
+                loadComponent: () =>
+                    import('./features/productivity/task-breakdown/task-breakdown.component').then(
+                        (m) => m.TaskBreakdownComponent
+                    ),
+            },
+            // Lifestyle
+            {
+                path: 'lifestyle/itinerary-generator',
+                loadComponent: () =>
+                    import('./features/lifestyle/itinerary-generator/itinerary-generator.component').then(
+                        (m) => m.ItineraryGeneratorComponent
+                    ),
             },
             { path: '**', redirectTo: 'dashboard' },
         ],

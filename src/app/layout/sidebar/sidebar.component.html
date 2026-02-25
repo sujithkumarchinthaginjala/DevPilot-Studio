@@ -20,7 +20,8 @@
             <p class="section-label">{{ group.title }}</p>
             }
             @for (item of group.items; track item.route) {
-            <a [routerLink]="item.route" routerLinkActive="active" class="sidebar-link" [title]="item.label">
+            <a [routerLink]="item.route" routerLinkActive="active" class="sidebar-link" [title]="item.label"
+                (click)="closeSidebar()">
                 <span class="sidebar-link__icon"><i class="bi" [ngClass]="item.icon"></i></span>
                 @if (!collapsed()) {
                 <span class="sidebar-link__label">{{ item.label }}</span>
@@ -44,3 +45,8 @@
         }
     </div>
 </aside>
+
+<!-- Mobile Backdrop -->
+@if (!collapsed()) {
+<div class="sidebar-backdrop" (click)="closeSidebar()"></div>
+}

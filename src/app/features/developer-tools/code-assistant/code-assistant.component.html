@@ -44,10 +44,10 @@
         </div>
 
         <!-- Output Panel -->
-        <div class="tool-results">
+        <div class="tool-results" id="result-area">
             @if (loading()) {
-            <div class="results-empty card">
-                <app-loading-spinner message="Analyzing your code logic..."></app-loading-spinner>
+            <div class="results-empty card ai-thinking-glow">
+                <app-loading-spinner message="Analyzing code and patterns..."></app-loading-spinner>
             </div>
             } @else if (response() || error()) {
             <app-ai-response [response]="response()" [error]="error()"></app-ai-response>

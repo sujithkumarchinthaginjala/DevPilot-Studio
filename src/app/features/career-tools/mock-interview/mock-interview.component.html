@@ -1,0 +1,81 @@
+<div class="tool-view fade-in">
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">Mock Interview Simulator</h1>
+            <p class="tool-header__desc">
+                Generate realistic technical and HR interview questions tailored to your target role.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <div class="tool-panel card">
+            <div class="input-group">
+                <label class="section-label">Target Role</label>
+                <input type="text" class="input" placeholder="e.g. Frontend Developer, Java Architect..."
+                    [ngModel]="role()" (ngModelChange)="role.set($event)" [disabled]="loading()">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="input-group">
+                    <label class="section-label">Level</label>
+                    <select class="input" [ngModel]="level()" (ngModelChange)="level.set($event)"
+                        [disabled]="loading()">
+                        @for (l of levels; track l) {
+                        <option [value]="l">{{ l }}</option>
+                        }
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="section-label">Interview Focus</label>
+                    <select class="input" [ngModel]="focus()" (ngModelChange)="focus.set($event)"
+                        [disabled]="loading()">
+                        @for (f of focusAreas; track f) {
+                        <option [value]="f">{{ f }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="generateInterview()"
+                    [disabled]="loading() || !role().trim()">
+                    {{ loading() ? 'Simulating Interviewer...' : 'Generate Mock Interview' }}
+                </button>
+            </div>
+
+            <div class="panel-info">
+                <p class="info-text">
+                    Llama 3 70B will generate a mix of role-specific technical deep-dives and behavioral challenges.
+                </p>
+            </div>
+        </div>
+
+        <div class="tool-results">
+            @if (loading()) {
+            <div class="results-empty card">
+                <app-loading-spinner message="Simulating top-tier tech interview..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">
+                        <i class="bi bi-people" style="font-size: 48px;"></i>
+                    </span>
+                    <h3 class="empty-state__title">Ready to Practice</h3>
+                    <p class="empty-state__desc">
+                        Select your role and career level to start a simulated interview session.
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

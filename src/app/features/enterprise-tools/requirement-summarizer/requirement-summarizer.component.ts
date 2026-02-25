@@ -34,6 +34,11 @@ export class RequirementSummarizerComponent {
         this.error.set(null);
         this.store.setLoading(true);
 
+        // Auto-scroll to results
+        setTimeout(() => {
+            document.getElementById('result-area')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+
         const { systemPrompt, userPrompt } = buildRequirementSummarizerPrompt(this.requirements());
 
         this.aiService.sendPrompt({

@@ -1,0 +1,63 @@
+<div class="tool-view fade-in">
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">AI Resume Optimizer</h1>
+            <p class="tool-header__desc">
+                Enhance your resume for ATS compatibility and recruiter impact using Llama 3 70B.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <div class="tool-panel card">
+            <div class="input-group">
+                <label class="section-label">Your Resume Content</label>
+                <textarea class="textarea" placeholder="Paste your current resume text (Experience, Skills, Summary)..."
+                    [ngModel]="resumeContent()" (ngModelChange)="resumeContent.set($event)" [disabled]="loading()"
+                    style="min-height: 250px;"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label class="section-label">Target Job Description (Optional)</label>
+                <textarea class="textarea"
+                    placeholder="Paste the Job Description to tailor your resume specifically for this role..."
+                    [ngModel]="jobDescription()" (ngModelChange)="jobDescription.set($event)" [disabled]="loading()"
+                    style="min-height: 150px;"></textarea>
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="optimizeResume()"
+                    [disabled]="loading() || !resumeContent().trim()">
+                    {{ loading() ? 'Optimizing Resume...' : 'Optimize & Tailor Resume' }}
+                </button>
+            </div>
+        </div>
+
+        <div class="tool-results" id="result-area">
+            @if (loading()) {
+            <div class="results-empty card ai-thinking-glow">
+                <app-loading-spinner message="Analyzing ATS patterns and impact..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">
+                        <i class="bi bi-file-earmark-person" style="font-size: 48px;"></i>
+                    </span>
+                    <h3 class="empty-state__title">Resume Ready</h3>
+                    <p class="empty-state__desc">
+                        Provide your resume text above to receive high-impact optimizations.
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

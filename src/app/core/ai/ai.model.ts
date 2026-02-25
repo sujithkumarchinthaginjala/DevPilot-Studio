@@ -3,6 +3,7 @@ export interface AIRequest {
     systemPrompt?: string;
     tool: ToolType;
     mode?: string;
+    model?: string;
     maxTokens?: number;
 }
 
@@ -51,9 +52,17 @@ export type ToolType =
     | 'requirement-summarizer'
     | 'email-drafter'
     | 'performance-review'
+    | 'resume-optimizer'
+    | 'linkedin-enhancer'
+    | 'job-analyzer'
+    | 'mock-interview'
+    | 'career-roadmap'
+    | 'itinerary-generator'
+    | 'study-planner'
+    | 'task-breakdown'
     | 'dashboard';
 
-export type AIProvider = 'claude' | 'openai' | 'gemini';
+export type AIProvider = 'claude' | 'openai' | 'gemini' | 'openrouter';
 
 export interface AIProviderConfig {
     provider: AIProvider;
@@ -61,6 +70,12 @@ export interface AIProviderConfig {
     model: string;
     apiUrl: string;
 }
+
+export const MODELS = {
+    PRIMARY: 'meta-llama/llama-3-70b-instruct',
+    BUDGET: 'meta-llama/llama-3-8b-instruct',
+    POLISH: 'anthropic/claude-3-haiku',
+};
 
 export interface AppPreferences {
     theme: 'dark' | 'light';
@@ -73,8 +88,16 @@ export const TOOL_LABELS: Record<ToolType, string> = {
     'commit-generator': 'Commit Generator',
     'test-generator': 'Test Generator',
     'meeting-analyzer': 'Meeting Analyzer',
-    'requirement-summarizer': 'Requirement Summarizer',
+    'requirement-summarizer': 'Req. Summarizer',
     'email-drafter': 'Email Drafter',
-    'performance-review': 'Performance Review',
+    'performance-review': 'Perf. Review',
+    'resume-optimizer': 'Resume Optimizer',
+    'linkedin-enhancer': 'LinkedIn Enhancer',
+    'job-analyzer': 'Job Analyzer',
+    'mock-interview': 'Mock Interview',
+    'career-roadmap': 'Career Roadmap',
+    'itinerary-generator': 'Travel Itinerary',
+    'study-planner': 'Study Planner',
+    'task-breakdown': 'Task Breakdown',
     'dashboard': 'Dashboard',
 };

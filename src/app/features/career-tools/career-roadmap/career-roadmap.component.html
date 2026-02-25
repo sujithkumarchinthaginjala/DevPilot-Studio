@@ -1,0 +1,70 @@
+<div class="tool-view fade-in">
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">AI Career Roadmap</h1>
+            <p class="tool-header__desc">
+                Generate structured 3-month, 6-month, and 1-year learning paths for your career goals.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <div class="tool-panel card">
+            <div class="input-group">
+                <label class="section-label">Your Career Goal</label>
+                <input type="text" class="input"
+                    placeholder="e.g. Senior Angular Developer, AI Engineer, Project Manager..." [ngModel]="goal()"
+                    (ngModelChange)="goal.set($event)" [disabled]="loading()">
+            </div>
+
+            <div class="input-group">
+                <label class="section-label">Your Current Skill Level</label>
+                <textarea class="textarea"
+                    placeholder="Briefly describe what you already know (e.g. Know HTML/CSS, basic JS, some React)..."
+                    [ngModel]="currentLevel()" (ngModelChange)="currentLevel.set($event)" [disabled]="loading()"
+                    style="min-height: 120px;"></textarea>
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="generateRoadmap()"
+                    [disabled]="loading() || !goal().trim()">
+                    {{ loading() ? 'Mapping Your Future...' : 'Generate Career Roadmap' }}
+                </button>
+            </div>
+
+            <div class="panel-info">
+                <p class="info-text">
+                    AI will suggest core skills, project ideas, and resources to help you reach your professional
+                    milestone.
+                </p>
+            </div>
+        </div>
+
+        <div class="tool-results">
+            @if (loading()) {
+            <div class="results-empty card">
+                <app-loading-spinner message="Strategizing your career milestones..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">
+                        <i class="bi bi-map" style="font-size: 48px;"></i>
+                    </span>
+                    <h3 class="empty-state__title">Plan Your Growth</h3>
+                    <p class="empty-state__desc">
+                        Tell us your goal to receive a structured learning and career strategy.
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

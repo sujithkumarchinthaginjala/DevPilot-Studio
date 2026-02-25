@@ -1,0 +1,63 @@
+<div class="tool-view fade-in">
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">Job Description Analyzer</h1>
+            <p class="tool-header__desc">
+                Identify skill gaps, match scores, and get a custom learning roadmap for any role.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <div class="tool-panel card">
+            <div class="input-group">
+                <label class="section-label">Job Description</label>
+                <textarea class="textarea"
+                    placeholder="Paste the Job Description from LinkedIn, Naukri, or company portal..."
+                    [ngModel]="jobDescription()" (ngModelChange)="jobDescription.set($event)" [disabled]="loading()"
+                    style="min-height: 250px;"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label class="section-label">Your Current Profile / Skills</label>
+                <textarea class="textarea" placeholder="Paste your skills list or brief experience summary..."
+                    [ngModel]="userProfile()" (ngModelChange)="userProfile.set($event)" [disabled]="loading()"
+                    style="min-height: 150px;"></textarea>
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="analyzeJob()"
+                    [disabled]="loading() || !jobDescription().trim()">
+                    {{ loading() ? 'Analyzing JD...' : 'Calculate Match & Analyze Gaps' }}
+                </button>
+            </div>
+        </div>
+
+        <div class="tool-results" id="result-area">
+            @if (loading()) {
+            <div class="results-empty card ai-thinking-glow">
+                <app-loading-spinner message="Simulating top-tier tech interview..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">
+                        <i class="bi bi-search" style="font-size: 48px;"></i>
+                    </span>
+                    <h3 class="empty-state__title">Job Analysis</h3>
+                    <p class="empty-state__desc">
+                        Provide the job posting text to see how you stack up against the requirements.
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="tool-view fade-in">
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">Smart Itinerary Generator</h1>
+            <p class="tool-header__desc">
+                Plan your next trip with a structured, day-wise travel guide including budget and safety tips.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <div class="tool-panel card">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="input-group">
+                    <label class="section-label">Destination</label>
+                    <input type="text" class="input" placeholder="e.g. Bali, Kyoto, Bangalore..."
+                        [ngModel]="destination()" (ngModelChange)="destination.set($event)" [disabled]="loading()">
+                </div>
+                <div class="input-group">
+                    <label class="section-label">Duration (Days)</label>
+                    <input type="number" class="input" min="1" max="30" [ngModel]="days()"
+                        (ngModelChange)="days.set($event)" [disabled]="loading()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="section-label">Interest Areas</label>
+                <textarea class="textarea"
+                    placeholder="e.g. History, Temples, Tech hubs, Nightlife, Coffee, Trekking..."
+                    [ngModel]="interests()" (ngModelChange)="interests.set($event)" [disabled]="loading()"
+                    style="min-height: 80px;"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label class="section-label">Budget Style</label>
+                <select class="input" [ngModel]="budget()" (ngModelChange)="budget.set($event)" [disabled]="loading()">
+                    @for (b of budgets; track b) {
+                    <option [value]="b">{{ b }}</option>
+                    }
+                </select>
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="generateItinerary()"
+                    [disabled]="loading() || !destination().trim()">
+                    {{ loading() ? 'Mapping Adventure...' : 'Generate Itinerary' }}
+                </button>
+            </div>
+        </div>
+
+        <div class="tool-results">
+            @if (loading()) {
+            <div class="results-empty card">
+                <app-loading-spinner message="Scouting local gems and culture..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">
+                        <i class="bi bi-airplane" style="font-size: 48px;"></i>
+                    </span>
+                    <h3 class="empty-state__title">Where to next?</h3>
+                    <p class="empty-state__desc">
+                        Provide a destination and interests to receive a curated day-by-day plan.
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

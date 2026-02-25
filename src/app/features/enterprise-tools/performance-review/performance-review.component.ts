@@ -31,8 +31,14 @@ export class PerformanceReviewComponent {
     async generateReview() {
         if (!this.context().trim()) return;
         this.loading.set(true);
+        this.response.set(null);
         this.error.set(null);
         this.store.setLoading(true);
+
+        // Auto-scroll to results
+        setTimeout(() => {
+            document.getElementById('result-area')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
 
         const { systemPrompt, userPrompt } = buildPerformanceReviewPrompt(this.context());
 

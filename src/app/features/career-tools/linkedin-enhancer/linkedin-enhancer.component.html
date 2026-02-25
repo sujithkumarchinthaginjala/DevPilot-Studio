@@ -1,0 +1,63 @@
+<div class="tool-view fade-in">
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">LinkedIn Profile Enhancer</h1>
+            <p class="tool-header__desc">
+                Optimize your LinkedIn Headline, About, and Experience for recruiters and researchers.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <div class="tool-panel card">
+            <div class="input-group">
+                <label class="section-label">Current "About" Section</label>
+                <textarea class="textarea" placeholder="Paste your current LinkedIn bio or summary..."
+                    [ngModel]="aboutContent()" (ngModelChange)="aboutContent.set($event)" [disabled]="loading()"
+                    style="min-height: 200px;"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label class="section-label">Key Experience / Projects</label>
+                <textarea class="textarea"
+                    placeholder="Describe your current role or top projects for better context..."
+                    [ngModel]="experienceContent()" (ngModelChange)="experienceContent.set($event)"
+                    [disabled]="loading()" style="min-height: 200px;"></textarea>
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="enhanceProfile()"
+                    [disabled]="loading() || (!aboutContent().trim() && !experienceContent().trim())">
+                    {{ loading() ? 'Enhancing Profile...' : 'Optimize LinkedIn Narrative' }}
+                </button>
+            </div>
+        </div>
+
+        <div class="tool-results" id="result-area">
+            @if (loading()) {
+            <div class="results-empty card ai-thinking-glow">
+                <app-loading-spinner message="Crafting professional branding..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">
+                        <i class="bi bi-linkedin" style="font-size: 48px;"></i>
+                    </span>
+                    <h3 class="empty-state__title">LinkedIn Optimization</h3>
+                    <p class="empty-state__desc">
+                        Paste your current profile sections to stand out to industry professionals.
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

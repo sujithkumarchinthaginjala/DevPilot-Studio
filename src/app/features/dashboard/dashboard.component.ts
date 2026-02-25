@@ -3,7 +3,21 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ToolCardComponent } from '../../shared/components/tool-card/tool-card.component';
 import { AppStore } from '../../stores/app.store';
-import { ToolType } from '../../core/ai/ai.model';
+
+interface ToolDef {
+    icon: string;
+    title: string;
+    description: string;
+    link: string;
+    badge?: string;
+    badgeClass?: string;
+    gradient: string;
+}
+
+interface ToolGroup {
+    title: string;
+    tools: ToolDef[];
+}
 
 @Component({
     selector: 'app-dashboard',
@@ -15,56 +29,103 @@ import { ToolType } from '../../core/ai/ai.model';
 export class DashboardComponent {
     store = inject(AppStore);
 
-    devTools: { icon: string; title: string; description: string; link: string; badge?: string; badgeClass?: string; gradient: string }[] = [
+    toolGroups: ToolGroup[] = [
         {
-            icon: 'bi-code-slash',
-            title: 'Code Assistant',
-            description: 'Explain, refactor, and improve your code with AI guidance.',
-            link: '/developer-tools/code-assistant',
-            badge: 'Popular',
-            badgeClass: 'badge-cyan',
-            gradient: 'linear-gradient(135deg, #6366f1, #a855f7)',
+            title: 'Career Accelerator',
+            tools: [
+                {
+                    icon: 'bi-file-earmark-person',
+                    title: 'Resume Optimizer',
+                    description: 'AI-driven ATS optimization for maximum hireability.',
+                    link: '/career-tools/resume-optimizer',
+                    badge: 'Popular',
+                    badgeClass: 'badge-cyan',
+                    gradient: 'linear-gradient(135deg, #6366f1, #a855f7)',
+                },
+                {
+                    icon: 'bi-linkedin',
+                    title: 'LinkedIn Enhancer',
+                    description: 'Professional branding and profile optimization.',
+                    link: '/career-tools/linkedin-enhancer',
+                    badge: 'New',
+                    gradient: 'linear-gradient(135deg, #0077b5, #00a0dc)',
+                },
+                {
+                    icon: 'bi-chat-dots',
+                    title: 'Mock Interview',
+                    description: 'Simulate top-tier tech interviews with AI feedback.',
+                    link: '/career-tools/mock-interview',
+                    gradient: 'linear-gradient(135deg, #10b981, #3b82f6)',
+                },
+                {
+                    icon: 'bi-map',
+                    title: 'Career Roadmap',
+                    description: 'Strategic path to your next major role.',
+                    link: '/career-tools/career-roadmap',
+                    gradient: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+                }
+            ]
         },
         {
-            icon: 'bi-git',
-            title: 'Commit Generator',
-            description: 'Generate meaningful commit messages following conventional specs.',
-            link: '/developer-tools/commit-generator',
-            gradient: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+            title: 'Developer Intelligence',
+            tools: [
+                {
+                    icon: 'bi-code-slash',
+                    title: 'Code Assistant',
+                    description: 'Explain, refactor, and improve code with AI.',
+                    link: '/developer-tools/code-assistant',
+                    badge: 'AI',
+                    gradient: 'linear-gradient(135deg, #6366f1, #06b6d4)',
+                },
+                {
+                    icon: 'bi-git',
+                    title: 'Commit Generator',
+                    description: 'Smart meaningful commit messages.',
+                    link: '/developer-tools/commit-generator',
+                    gradient: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+                }
+            ]
         },
         {
-            icon: 'bi-funnel',
-            title: 'Test Generator',
-            description: 'Create comprehensive unit tests for your functions automatically.',
-            link: '/developer-tools/test-generator',
-            gradient: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+            title: 'Productivity Labs',
+            tools: [
+                {
+                    icon: 'bi-calendar-check',
+                    title: 'Study Planner',
+                    description: 'Structured schedules for exam success.',
+                    link: '/productivity/study-planner',
+                    badge: 'New',
+                    gradient: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+                },
+                {
+                    icon: 'bi-list-check',
+                    title: 'Task Breakdown',
+                    description: 'Deconstruct big goals into micro-tasks.',
+                    link: '/productivity/task-breakdown',
+                    gradient: 'linear-gradient(135deg, #ec4899, #f43f5e)',
+                },
+                {
+                    icon: 'bi-envelope',
+                    title: 'Email Drafter',
+                    description: 'High-impact professional drafts.',
+                    link: '/enterprise-tools/email-drafter',
+                    gradient: 'linear-gradient(135deg, #f59e0b, #d946ef)',
+                }
+            ]
         },
-    ];
-
-    enterpriseTools: { icon: string; title: string; description: string; link: string; badge?: string; badgeClass?: string; gradient: string }[] = [
         {
-            icon: 'bi-people',
-            title: 'Meeting Analyzer',
-            description: 'Convert messy notes into structured summaries and action items.',
-            link: '/enterprise-tools/meeting-analyzer',
-            badge: 'New',
-            badgeClass: 'badge-success',
-            gradient: 'linear-gradient(135deg, #10b981, #3b82f6)',
-        },
-        {
-            icon: 'bi-envelope',
-            title: 'Email Drafter',
-            description: 'Draft professional emails for any context with the perfect tone.',
-            link: '/enterprise-tools/email-drafter',
-            gradient: 'linear-gradient(135deg, #f59e0b, #ef4444)',
-        },
-        {
-            icon: 'bi-file-earmark-text',
-            title: 'Requirement Summarizer',
-            description: 'Distill complex requirements into clear project objectives.',
-            link: '/enterprise-tools/requirement-summarizer',
-            gradient: 'linear-gradient(135deg, #6366f1, #06b6d4)',
-        },
+            title: 'Lifestyle & Travel',
+            tools: [
+                {
+                    icon: 'bi-airplane',
+                    title: 'Travel Itinerary',
+                    description: 'Smart day-by-day travel planning.',
+                    link: '/lifestyle/itinerary-generator',
+                    badge: 'New',
+                    gradient: 'linear-gradient(135deg, #06b6d4, #10b981)',
+                }
+            ]
+        }
     ];
 
     ngOnInit() {
