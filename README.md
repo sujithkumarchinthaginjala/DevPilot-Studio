@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# DevPilot-Studio
-=======
 # DevPilot Studio
 
 AI-powered Developer + Enterprise Command Center built with Angular 21.
@@ -53,4 +50,3 @@ AI-powered Developer + Enterprise Command Center built with Angular 21.
 
 ## 🌐 Deployment
 Deploy to Netlify or Vercel using the provided `netlify.toml` and `_redirects` configuration.
->>>>>>> 415bbf9 (Initial commit)

@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-exports.handler = async (event, context) => {
+exports.handler = async (event) => {
     const method = (event.httpMethod || '').toUpperCase();
     const path = event.path || '';
 
@@ -13,7 +13,7 @@ exports.handler = async (event, context) => {
         'Content-Type': 'application/json'
     };
 
-    // 1. Handle Preflight
+    // 1️⃣ Handle CORS Preflight
     if (method === 'OPTIONS') {
         return {
             statusCode: 200,
@@ -22,33 +22,30 @@ exports.handler = async (event, context) => {
         };
     }
 
-    // 2. Handle simple GET check
+    // 2️⃣ Simple health check
     if (method === 'GET') {
         return {
             statusCode: 200,
             headers: corsHeaders,
             body: JSON.stringify({
                 status: 'Gemini Proxy is Active',
-                info: 'Use POST to generate content',
+                info: 'Send POST request with { prompt }',
                 debug: { method, path }
             })
         };
     }
 
-    // 3. Block other methods
+    // 3️⃣ Block other methods
     if (method !== 'POST') {
         return {
             statusCode: 405,
             headers: corsHeaders,
             body: JSON.stringify({
                 error: 'Method Not Allowed',
-                received: method,
-                tip: 'Ensure your app is sending a POST request to this endpoint'
-            }),
+                received: method
+            })
         };
     }
-
-    let currentModel = 'gemini-1.5-flash';
 
     try {
         if (!event.body) {
@@ -60,22 +57,32 @@ exports.handler = async (event, context) => {
         }
 
         const body = JSON.parse(event.body);
-        const { prompt, systemPrompt, max_tokens } = body;
-        currentModel = body.model || 'gemini-1.5-flash';
-        const apiKey = process.env.GEMINI_API_KEY;
 
-        if (!apiKey) {
-            console.error('[Gemini Proxy] Error: GEMINI_API_KEY is not set');
+        const prompt = body.prompt?.trim();
+        const systemPrompt = body.systemPrompt?.trim();
+        const maxTokens = body.max_tokens ?? 2048;
+        const currentModel = body.model || 'gemini-1.5-flash';
+
+        if (!prompt) {
             return {
-                statusCode: 500,
+                statusCode: 400,
                 headers: corsHeaders,
-                body: JSON.stringify({ error: 'Server configuration error: Key missing' }),
+                body: JSON.stringify({ error: 'Prompt is required' })
             };
         }
 
-        // Highly robust approach: Combine system prompt into user contents
-        // This avoids 400 (unknown field) and 404 (model not found on v1beta)
-        // Match user's requested prompt format
+        const apiKey = process.env.GEMINI_API_KEY;
+
+        if (!apiKey) {
+            console.error('[Gemini Proxy] GEMINI_API_KEY is missing');
+            return {
+                statusCode: 500,
+                headers: corsHeaders,
+                body: JSON.stringify({ error: 'Server configuration error: API key missing' })
+            };
+        }
+
+        // 🔹 Combine system + user safely (Gemini doesn't support system field in REST v1beta)
         const combinedPrompt = systemPrompt
             ? `System Instruction:\n${systemPrompt}\n\nUser Request:\n${prompt}`
             : prompt;
@@ -87,20 +94,20 @@ exports.handler = async (event, context) => {
                 }
             ],
             generationConfig: {
-                maxOutputTokens: max_tokens ?? 2048,
-                temperature: 0.7,
+                maxOutputTokens: maxTokens,
+                temperature: 0.7
             }
         };
 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
 
-        console.log(`[Gemini Proxy] Calling stable v1: ${currentModel}`);
+        console.log(`[Gemini Proxy] Calling model: ${currentModel}`);
 
         const response = await axios.post(apiUrl, geminiBody, {
             headers: { 'Content-Type': 'application/json' }
         });
 
-        const candidate = response.data.candidates?.[0];
+        const candidate = response.data?.candidates?.[0];
         const text = candidate?.content?.parts?.[0]?.text || '';
 
         return {
@@ -109,26 +116,24 @@ exports.handler = async (event, context) => {
             body: JSON.stringify({
                 content: text,
                 model: currentModel,
-                usage: response.data.usageMetadata || { totalTokenCount: 0 }
-            }),
+                usage: response.data?.usageMetadata || null
+            })
         };
-    } catch (error) {
-        const status = error.response ? error.response.status : 500;
-        const details = error.response ? error.response.data : error.message;
-        const attemptedUrl = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent`;
 
-        console.error(`[Gemini Proxy] API Error (${status}) at ${attemptedUrl}:`, JSON.stringify(details));
+    } catch (error) {
+        const status = error.response?.status || 500;
+        const details = error.response?.data || error.message;
+
+        console.error('[Gemini Proxy] API Error:', JSON.stringify(details));
 
         return {
             statusCode: status,
             headers: corsHeaders,
             body: JSON.stringify({
                 error: 'AI Proxy Error',
-                message: error.message,
-                status: status,
-                url: attemptedUrl,
-                details: details
-            }),
+                status,
+                details
+            })
         };
     }
 };
