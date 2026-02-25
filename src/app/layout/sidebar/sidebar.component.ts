@@ -71,6 +71,9 @@ export class SidebarComponent {
     ];
 
     closeSidebar(): void {
-        this.store.sidebarCollapsed.set(true);
+        // Only auto-close sidebar on mobile devices (width <= 768px)
+        if (window.innerWidth <= 768) {
+            this.store.sidebarCollapsed.set(true);
+        }
     }
 }

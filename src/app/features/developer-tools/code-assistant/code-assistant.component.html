@@ -46,7 +46,7 @@
         <!-- Output Panel -->
         <div class="tool-results" id="result-area">
             @if (loading()) {
-            <div class="results-empty card ai-thinking-glow">
+            <div class="results-empty card ai-loading-card">
                 <app-loading-spinner message="Analyzing code and patterns..."></app-loading-spinner>
             </div>
             } @else if (response() || error()) {

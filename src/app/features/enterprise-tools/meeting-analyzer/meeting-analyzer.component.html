@@ -32,7 +32,7 @@
 
         <div class="tool-results" id="result-area">
             @if (loading()) {
-            <div class="results-empty card ai-thinking-glow">
+            <div class="results-empty card ai-loading-card">
                 <app-loading-spinner message="Synthesizing meeting insights..."></app-loading-spinner>
             </div>
             } @else if (response() || error()) {

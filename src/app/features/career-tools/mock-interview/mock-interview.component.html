@@ -58,7 +58,7 @@
 
         <div class="tool-results">
             @if (loading()) {
-            <div class="results-empty card">
+            <div class="results-empty card ai-loading-card">
                 <app-loading-spinner message="Simulating top-tier tech interview..."></app-loading-spinner>
             </div>
             } @else if (response() || error()) {

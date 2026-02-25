@@ -55,7 +55,7 @@
 
         <div class="tool-results">
             @if (loading()) {
-            <div class="results-empty card">
+            <div class="results-empty card ai-loading-card">
                 <app-loading-spinner message="Scouting local gems and culture..."></app-loading-spinner>
             </div>
             } @else if (response() || error()) {

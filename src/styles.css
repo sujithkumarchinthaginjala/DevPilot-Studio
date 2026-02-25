@@ -446,72 +446,6 @@ select.input {
 }
 
 /* ============================================
-   AI Thinking & Glow Effects
-   ============================================ */
-.ai-thinking-glow {
-  position: relative;
-  border-radius: var(--radius-2xl);
-  overflow: hidden;
-}
-
-.ai-thinking-glow::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  background: conic-gradient(from 0deg,
-      transparent 0%,
-      var(--accent) 25%,
-      var(--cyan) 50%,
-      var(--accent) 75%,
-      transparent 100%);
-  animation: rotate-glow 2s linear infinite;
-  z-index: -1;
-  opacity: 0.6;
-  filter: blur(8px);
-}
-
-.ai-thinking-glow::after {
-  content: '';
-  position: absolute;
-  inset: 1px;
-  background: var(--bg-surface);
-  border-radius: calc(var(--radius-2xl) - 1px);
-  z-index: -1;
-}
-
-@keyframes rotate-glow {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.ai-glow-border {
-  position: relative;
-}
-
-.ai-glow-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(90deg, var(--accent), var(--cyan), var(--accent));
-  background-size: 200% auto;
-  animation: shine 3s linear infinite;
-  border-radius: inherit;
-  z-index: -1;
-  opacity: 0.3;
-}
-
-@keyframes shine {
-  to {
-    background-position: 200% center;
-  }
-}
-
-/* ============================================
    Tool Layout System
    ============================================ */
 .tool-view {
@@ -657,6 +591,53 @@ select.input {
 @media (max-width: 1024px) {
   .results-empty {
     min-height: 360px;
+  }
+}
+
+/* ============================================
+   Premium AI "Apple Intelligence" Effect
+   ============================================ */
+.ai-loading-card {
+  position: relative;
+  border: none !important;
+  background: var(--bg-surface) !important;
+  overflow: hidden;
+}
+
+.ai-loading-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg,
+      #007aff, #5856d6, #af52de, #ff2d55, #ff9500, #ffcc00, #34c759, #5ac8fa, #007aff);
+  background-size: 400% 400%;
+  animation: apple-ai-glow 4s linear infinite;
+  z-index: -1;
+  border-radius: var(--radius-2xl);
+  filter: blur(8px);
+  opacity: 0.8;
+}
+
+.ai-loading-card::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  background: var(--bg-surface);
+  border-radius: calc(var(--radius-2xl) - 1px);
+  z-index: -1;
+}
+
+@keyframes apple-ai-glow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
   }
 }
 
