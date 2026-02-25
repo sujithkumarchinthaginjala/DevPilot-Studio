@@ -22,24 +22,40 @@ exports.handler = async (event) => {
 
     try {
         const { prompt, systemPrompt } = JSON.parse(event.body);
+
+        if (!prompt) {
+            return {
+                statusCode: 400,
+                headers: corsHeaders,
+                body: JSON.stringify({ error: 'Prompt is required' })
+            };
+        }
+
         const apiKey = process.env.OPENROUTER_API_KEY;
 
         if (!apiKey) {
             return {
                 statusCode: 500,
                 headers: corsHeaders,
-                body: JSON.stringify({ error: 'Missing API key' })
+                body: JSON.stringify({ error: 'Missing OPENROUTER_API_KEY' })
             };
         }
 
         const response = await axios.post(
             'https://openrouter.ai/api/v1/chat/completions',
             {
-                model: 'google/gemini-1.5-flash',
+                model: 'meta-llama/llama-3-8b-instruct',
                 messages: [
-                    { role: 'system', content: systemPrompt || '' },
-                    { role: 'user', content: prompt }
-                ]
+                    {
+                        role: 'system',
+                        content: systemPrompt || 'You are a helpful AI assistant.'
+                    },
+                    {
+                        role: 'user',
+                        content: prompt
+                    }
+                ],
+                temperature: 0.7
             },
             {
                 headers: {
