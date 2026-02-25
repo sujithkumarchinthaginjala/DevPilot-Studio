@@ -35,7 +35,7 @@ export class AiResponseComponent {
             .replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>')
             .replace(/^- (.*?)$/gm, '<li>$1</li>')
             .replace(/(<li>.*<\/li>)/s, '<ul class="response-list">$1</ul>')
-            .replace(/^(\d+)\. (.*?)$/gm, '<li>$2</li>')
+            .replace(/^\d+\. (.*?)$/gm, '<li>$1</li>')
             .replace(/\n\n/g, '<br><br>')
             .replace(/\n/g, '<br>');
     }

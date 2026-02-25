@@ -26,9 +26,9 @@ export class CodeAssistantComponent {
     loading = signal<boolean>(false);
 
     modes: { id: 'explain' | 'refactor' | 'improve'; label: string; icon: string }[] = [
-        { id: 'explain', label: 'Explain', icon: '🔍' },
-        { id: 'refactor', label: 'Refactor', icon: '♻️' },
-        { id: 'improve', label: 'Improve', icon: '🚀' },
+        { id: 'explain', label: 'Explain', icon: 'bi-search' },
+        { id: 'refactor', label: 'Refactor', icon: 'bi-arrow-repeat' },
+        { id: 'improve', label: 'Improve', icon: 'bi-rocket' },
     ];
 
     ngOnInit() {

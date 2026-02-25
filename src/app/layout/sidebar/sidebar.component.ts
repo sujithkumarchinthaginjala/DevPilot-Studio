@@ -1,5 +1,6 @@
 import { Component, inject, computed } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { AppStore } from '../../stores/app.store';
 
 interface NavItem {
@@ -17,7 +18,7 @@ interface NavGroup {
 @Component({
     selector: 'app-sidebar',
     standalone: true,
-    imports: [RouterLink, RouterLinkActive],
+    imports: [CommonModule, RouterLink, RouterLinkActive],
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.css',
 })
@@ -29,24 +30,24 @@ export class SidebarComponent {
         {
             title: 'Main',
             items: [
-                { icon: '⬡', label: 'Dashboard', route: '/dashboard' },
+                { icon: 'bi-grid-1x2', label: 'Dashboard', route: '/dashboard' },
             ],
         },
         {
             title: 'Developer Tools',
             items: [
-                { icon: '⌨', label: 'Code Assistant', route: '/developer-tools/code-assistant', badge: 'AI' },
-                { icon: '✦', label: 'Commit Generator', route: '/developer-tools/commit-generator' },
-                { icon: '⚗', label: 'Test Generator', route: '/developer-tools/test-generator' },
+                { icon: 'bi-code-slash', label: 'Code Assistant', route: '/developer-tools/code-assistant', badge: 'AI' },
+                { icon: 'bi-git', label: 'Commit Generator', route: '/developer-tools/commit-generator' },
+                { icon: 'bi-funnel', label: 'Test Generator', route: '/developer-tools/test-generator' },
             ],
         },
         {
             title: 'Enterprise Tools',
             items: [
-                { icon: '📋', label: 'Meeting Analyzer', route: '/enterprise-tools/meeting-analyzer' },
-                { icon: '📄', label: 'Req. Summarizer', route: '/enterprise-tools/requirement-summarizer' },
-                { icon: '✉', label: 'Email Drafter', route: '/enterprise-tools/email-drafter' },
-                { icon: '📊', label: 'Perf. Review', route: '/enterprise-tools/performance-review' },
+                { icon: 'bi-people', label: 'Meeting Analyzer', route: '/enterprise-tools/meeting-analyzer' },
+                { icon: 'bi-file-earmark-text', label: 'Req. Summarizer', route: '/enterprise-tools/requirement-summarizer' },
+                { icon: 'bi-envelope', label: 'Email Drafter', route: '/enterprise-tools/email-drafter' },
+                { icon: 'bi-bar-chart', label: 'Perf. Review', route: '/enterprise-tools/performance-review' },
             ],
         },
     ];

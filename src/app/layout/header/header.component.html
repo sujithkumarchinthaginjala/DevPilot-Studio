@@ -2,7 +2,7 @@
     <div class="header__left">
         <!-- Hamburger toggle -->
         <button class="header__toggle btn btn-ghost btn-sm" (click)="toggleSidebar()" title="Toggle sidebar">
-            ☰
+            <i class="bi bi-list"></i>
         </button>
 
         <!-- Breadcrumb -->
@@ -24,13 +24,15 @@
     <div class="header__right">
         <!-- Usage -->
         <div class="header__metric">
+            <i class="bi bi-lightning-charge"></i>
             <span class="header__metric-value">{{ totalPrompts() }}</span>
             <span class="header__metric-label">Prompts</span>
         </div>
 
         <!-- New Session -->
         <a href="/dashboard" class="btn btn-primary btn-sm" (click)="newSession()">
-            <span>+ New Session</span>
+            <i class="bi bi-plus-lg"></i>
+            <span>New Session</span>
         </a>
     </div>
 </header>

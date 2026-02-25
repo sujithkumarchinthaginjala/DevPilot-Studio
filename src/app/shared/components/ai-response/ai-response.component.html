@@ -1,6 +1,8 @@
 @if (error) {
 <div class="response-error fade-in">
-    <span class="response-error__icon">⚠️</span>
+    <span class="response-error__icon">
+        <i class="bi bi-exclamation-triangle"></i>
+    </span>
     <div>
         <p class="response-error__title">AI Error</p>
         <p class="response-error__message">{{ error }}</p>
@@ -12,7 +14,10 @@
 <div class="response-container fade-in">
     <div class="response-header">
         <div class="response-meta">
-            <span class="badge badge-primary">✦ AI Response</span>
+            <span class="badge badge-primary">
+                <i class="bi bi-stars"></i>
+                AI Response
+            </span>
             @if (response.model) {
             <span class="response-model">{{ response.model }}</span>
             }
@@ -21,7 +26,13 @@
             }
         </div>
         <button class="btn btn-sm btn-ghost copy-btn" (click)="copyToClipboard()">
-            {{ isCopied ? '✓ Copied!' : '⎘ Copy' }}
+            @if (isCopied) {
+            <i class="bi bi-check-lg"></i>
+            Copied!
+            } @else {
+            <i class="bi bi-clipboard"></i>
+            Copy
+            }
         </button>
     </div>
     <div class="response-body" [innerHTML]="formatContent(response.content)"></div>

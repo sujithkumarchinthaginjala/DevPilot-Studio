@@ -1,0 +1,29 @@
+﻿
+> devpilot-studio@0.0.0 build
+> ng build
+
+[33mΓ¥»[39m Building...
+[32mΓ£ö[39m Building...
+[1mInitial chunk files[22m[2m | [22m[1mNames[22m                           [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mchunk-AYFY4ZGR.js[39m  [2m | [22m[2m-[22m                               [2m | [22m[36m183.77 kB[39m[2m | [22m               [36m53.77 kB[39m
+[32mstyles-JCRHVUDV.css[39m[2m | [22m[2mstyles[22m                          [2m | [22m[36m101.84 kB[39m[2m | [22m               [36m12.76 kB[39m
+[32mchunk-GAPIUZPF.js[39m  [2m | [22m[2m-[22m                               [2m | [22m [36m85.33 kB[39m[2m | [22m               [36m21.59 kB[39m
+[32mmain-2UWFWZGU.js[39m   [2m | [22m[2mmain[22m                            [2m | [22m [36m14.16 kB[39m[2m | [22m                [36m3.35 kB[39m
+
+[1m [22m                  [2m | [22m[1mInitial total[22m                   [2m | [22m[1m385.10 kB[22m[2m | [22m               [1m91.46 kB[22m
+
+[1mLazy chunk files[22m   [2m | [22m[1mNames[22m                           [2m | [22m [1mRaw size[22m[2m | [22m[1mEstimated transfer size[22m
+[32mchunk-PMXST3MG.js[39m  [2m | [22m[2m-[22m                               [2m | [22m [36m38.16 kB[39m[2m | [22m                [36m9.89 kB[39m
+[32mchunk-5WPLHTO6.js[39m  [2m | [22m[2mdashboard-component[22m             [2m | [22m [36m11.80 kB[39m[2m | [22m                [36m2.99 kB[39m
+[32mchunk-TV4LTA5N.js[39m  [2m | [22m[2mcode-assistant-component[22m        [2m | [22m  [36m8.58 kB[39m[2m | [22m                [36m2.55 kB[39m
+[32mchunk-HQXSSQAW.js[39m  [2m | [22m[2memail-drafter-component[22m         [2m | [22m  [36m8.06 kB[39m[2m | [22m                [36m2.44 kB[39m
+[32mchunk-5ZTFPZWZ.js[39m  [2m | [22m[2mcommit-generator-component[22m      [2m | [22m  [36m7.00 kB[39m[2m | [22m                [36m2.13 kB[39m
+[32mchunk-45OH7ATE.js[39m  [2m | [22m[2mtest-generator-component[22m        [2m | [22m  [36m6.91 kB[39m[2m | [22m                [36m2.12 kB[39m
+[32mchunk-4LFQUGMJ.js[39m  [2m | [22m[2mperformance-review-component[22m    [2m | [22m  [36m6.71 kB[39m[2m | [22m                [36m2.05 kB[39m
+[32mchunk-FYICQ5YW.js[39m  [2m | [22m[2mrequirement-summarizer-component[22m[2m | [22m  [36m6.31 kB[39m[2m | [22m                [36m1.97 kB[39m
+[32mchunk-RO6UPCQ2.js[39m  [2m | [22m[2mmeeting-analyzer-component[22m      [2m | [22m  [36m6.22 kB[39m[2m | [22m                [36m1.96 kB[39m
+
+Application bundle generation complete. [5.933 seconds] - 2026-02-25T13:58:02.290Z
+
+Output location: C:\DevPilot Studio\dist\devpilot-studio
+

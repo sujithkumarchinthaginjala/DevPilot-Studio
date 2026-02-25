@@ -21,7 +21,9 @@
                 @for (m of modes; track m.id) {
                 <button class="mode-btn" [class.active]="mode() === m.id" (click)="mode.set(m.id)"
                     [disabled]="loading()">
-                    <span class="mode-btn__icon">{{ m.icon }}</span>
+                    <span class="mode-btn__icon">
+                        <i class="bi" [ngClass]="m.icon"></i>
+                    </span>
                     <span class="mode-btn__label">{{ m.label }}</span>
                 </button>
                 }
@@ -52,7 +54,9 @@
             } @else {
             <div class="results-empty card">
                 <div class="empty-state">
-                    <span class="empty-state__icon">🤖</span>
+                    <span class="empty-state__icon">
+                        <i class="bi bi-robot" style="font-size: 48px;"></i>
+                    </span>
                     <h3 class="empty-state__title">Ready for Analysis</h3>
                     <p class="empty-state__desc">
                         Select a mode and paste your code to see AI magic.

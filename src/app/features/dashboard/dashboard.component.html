@@ -60,7 +60,9 @@
         <div class="history-list card">
             @for (item of store.recentHistory(); track item.id) {
             <div class="history-item">
-                <div class="history-item__icon">✦</div>
+                <div class="history-item__icon">
+                    <i class="bi bi-stars"></i>
+                </div>
                 <div class="history-item__body">
                     <span class="history-item__prompt">{{ item.prompt }}</span>
                     <span class="history-item__meta">{{ item.tool }} • {{ item.timestamp | date:'shortTime' }}</span>

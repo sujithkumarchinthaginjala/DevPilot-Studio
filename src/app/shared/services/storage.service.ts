@@ -6,7 +6,7 @@ export class StorageService {
 
     get<T>(key: string, defaultValue: T): T {
         try {
-            const raw = localStorage.getItem(this.prefix + key);
+            const raw = sessionStorage.getItem(this.prefix + key);
             if (raw === null) return defaultValue;
             return JSON.parse(raw) as T;
         } catch {
@@ -16,19 +16,19 @@ export class StorageService {
 
     set<T>(key: string, value: T): void {
         try {
-            localStorage.setItem(this.prefix + key, JSON.stringify(value));
+            sessionStorage.setItem(this.prefix + key, JSON.stringify(value));
         } catch (e) {
-            console.warn('[StorageService] Failed to write to localStorage:', e);
+            console.warn('[StorageService] Failed to write to sessionStorage:', e);
         }
     }
 
     remove(key: string): void {
-        localStorage.removeItem(this.prefix + key);
+        sessionStorage.removeItem(this.prefix + key);
     }
 
     clear(): void {
-        Object.keys(localStorage)
+        Object.keys(sessionStorage)
             .filter((k) => k.startsWith(this.prefix))
-            .forEach((k) => localStorage.removeItem(k));
+            .forEach((k) => sessionStorage.removeItem(k));
     }
 }
