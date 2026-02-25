@@ -47,7 +47,7 @@ exports.handler = async (event) => {
         };
     }
 
-    let currentModel = 'gemini-1.5-flash';
+    const currentModel = body.model || 'gemini-1.5-flash-latest';
 
     try {
         if (!event.body) {
@@ -63,7 +63,7 @@ exports.handler = async (event) => {
         const prompt = body.prompt?.trim();
         const systemPrompt = body.systemPrompt?.trim();
         const maxTokens = body.max_tokens ?? 2048;
-        currentModel = body.model || 'gemini-1.5-flash';
+        const currentModel = body.model || 'gemini-1.5-flash-latest';
 
         if (!prompt) {
             return {
