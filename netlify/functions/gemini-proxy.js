@@ -47,6 +47,8 @@ exports.handler = async (event) => {
         };
     }
 
+    let currentModel = 'gemini-1.5-flash';
+
     try {
         if (!event.body) {
             return {
@@ -61,7 +63,7 @@ exports.handler = async (event) => {
         const prompt = body.prompt?.trim();
         const systemPrompt = body.systemPrompt?.trim();
         const maxTokens = body.max_tokens ?? 2048;
-        const currentModel = body.model || 'gemini-1.5-flash';
+        currentModel = body.model || 'gemini-1.5-flash';
 
         if (!prompt) {
             return {
@@ -99,7 +101,7 @@ exports.handler = async (event) => {
             }
         };
 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`;
 
         console.log(`[Gemini Proxy] Calling stable v1: ${currentModel}`);
 
@@ -123,7 +125,7 @@ exports.handler = async (event) => {
     } catch (error) {
         const status = error.response?.status || 500;
         const details = error.response?.data || error.message;
-        const attemptedUrl = `https://generativelanguage.googleapis.com/v1/models/${currentModel}:generateContent`;
+        const attemptedUrl = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent`;
 
         console.error(`[Gemini Proxy] API Error (${status}) at ${attemptedUrl}:`, JSON.stringify(details));
 
