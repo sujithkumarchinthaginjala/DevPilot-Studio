@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AppStore } from '../../stores/app.store';
+import { ChannelType } from '../../core/ai/ai.model';
 
 interface NavItem {
     icon: string;
@@ -13,6 +14,7 @@ interface NavItem {
 interface NavGroup {
     title: string;
     items: NavItem[];
+    channel: ChannelType;
 }
 
 @Component({
@@ -25,16 +27,28 @@ interface NavGroup {
 export class SidebarComponent {
     store = inject(AppStore);
     collapsed = this.store.sidebarCollapsed;
+    activeChannel = this.store.activeChannel;
 
-    navGroups: NavGroup[] = [
+    channels: { id: ChannelType; icon: string; label: string }[] = [
+        { id: 'all', icon: 'bi-grid', label: 'All' },
+        { id: 'developer', icon: 'bi-code-slash', label: 'Dev' },
+        { id: 'career', icon: 'bi-briefcase', label: 'Career' },
+        { id: 'enterprise', icon: 'bi-building', label: 'Ent' },
+        { id: 'productivity', icon: 'bi-lightning', label: 'Prod' },
+        { id: 'lifestyle', icon: 'bi-heart', label: 'Life' },
+    ];
+
+    allNavGroups: NavGroup[] = [
         {
             title: 'Overview',
+            channel: 'all',
             items: [
                 { icon: 'bi-grid-1x2', label: 'Dashboard', route: '/dashboard' },
             ],
         },
         {
             title: 'Career Accelerator',
+            channel: 'career',
             items: [
                 { icon: 'bi-file-earmark-person', label: 'Resume Optimizer', route: '/career-tools/resume-optimizer', badge: 'AI' },
                 { icon: 'bi-linkedin', label: 'LinkedIn Enhancer', route: '/career-tools/linkedin-enhancer', badge: 'New' },
@@ -45,30 +59,53 @@ export class SidebarComponent {
         },
         {
             title: 'Developer Suite',
+            channel: 'developer',
             items: [
                 { icon: 'bi-code-slash', label: 'Code Assistant', route: '/developer-tools/code-assistant', badge: 'AI' },
                 { icon: 'bi-git', label: 'Commit Generator', route: '/developer-tools/commit-generator' },
                 { icon: 'bi-funnel', label: 'Test Generator', route: '/developer-tools/test-generator' },
+                { icon: 'bi-diagram-3', label: 'System Architect', route: '/developer-tools/system-architect', badge: 'New' },
+            ],
+        },
+        {
+            title: 'Enterprise Tools',
+            channel: 'enterprise',
+            items: [
+                { icon: 'bi-envelope', label: 'Email Drafter', route: '/enterprise-tools/email-drafter', badge: 'Pro' },
+                { icon: 'bi-people', label: 'Meeting Analyzer', route: '/enterprise-tools/meeting-analyzer' },
+                { icon: 'bi-file-earmark-text', label: 'Req. Summarizer', route: '/enterprise-tools/requirement-summarizer' },
+                { icon: 'bi-bar-chart', label: 'Perf. Review', route: '/enterprise-tools/performance-review' },
+                { icon: 'bi-grid-3x3-gap', label: 'SWOT Analysis', route: '/enterprise-tools/swot-analysis', badge: 'New' },
             ],
         },
         {
             title: 'Productivity',
+            channel: 'productivity',
             items: [
-                { icon: 'bi-envelope', label: 'Email Drafter', route: '/enterprise-tools/email-drafter', badge: 'Pro' },
                 { icon: 'bi-calendar-check', label: 'Study Planner', route: '/productivity/study-planner', badge: 'New' },
                 { icon: 'bi-list-check', label: 'Task Breakdown', route: '/productivity/task-breakdown' },
-                { icon: 'bi-people', label: 'Meeting Analyzer', route: '/enterprise-tools/meeting-analyzer' },
-                { icon: 'bi-file-earmark-text', label: 'Req. Summarizer', route: '/enterprise-tools/requirement-summarizer' },
-                { icon: 'bi-bar-chart', label: 'Perf. Review', route: '/enterprise-tools/performance-review' },
+                { icon: 'bi-piggy-bank', label: 'Budget Planner', route: '/productivity/budget-planner', badge: 'AI' },
             ],
         },
         {
             title: 'Lifestyle',
+            channel: 'lifestyle',
             items: [
                 { icon: 'bi-airplane', label: 'Travel Itinerary', route: '/lifestyle/itinerary-generator', badge: 'New' },
+                { icon: 'bi-heart-pulse', label: 'Health Coach', route: '/lifestyle/healthy-habits', badge: 'AI' },
             ],
         },
     ];
+
+    get navGroups(): NavGroup[] {
+        const active = this.activeChannel();
+        if (active === 'all') return this.allNavGroups;
+        return this.allNavGroups.filter(g => g.channel === active || g.channel === 'all');
+    }
+
+    setChannel(id: ChannelType): void {
+        this.store.setActiveChannel(id);
+    }
 
     closeSidebar(): void {
         // Only auto-close sidebar on mobile devices (width <= 768px)

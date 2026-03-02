@@ -12,6 +12,19 @@
         }
     </div>
 
+    <!-- Channel Switcher -->
+    <div class="channel-switcher" [class.channel-switcher--collapsed]="collapsed()">
+        @for (ch of channels; track ch.id) {
+        <button class="channel-btn" [class.active]="activeChannel() === ch.id" (click)="setChannel(ch.id)"
+            [title]="ch.label">
+            <span class="channel-btn__icon"><i class="bi" [ngClass]="ch.icon"></i></span>
+            @if (!collapsed()) {
+            <span class="channel-btn__label">{{ ch.label }}</span>
+            }
+        </button>
+        }
+    </div>
+
     <!-- Navigation -->
     <nav class="sidebar__nav">
         @for (group of navGroups; track group.title) {

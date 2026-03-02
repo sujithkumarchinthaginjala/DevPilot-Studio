@@ -60,7 +60,36 @@ export type ToolType =
     | 'itinerary-generator'
     | 'study-planner'
     | 'task-breakdown'
+    | 'system-architect'
+    | 'swot-analysis'
+    | 'healthy-habits'
+    | 'budget-planner'
     | 'dashboard';
+
+export type ChannelType = 'all' | 'developer' | 'career' | 'enterprise' | 'productivity' | 'lifestyle';
+
+export const TOOL_CHANNELS: Record<ToolType, ChannelType> = {
+    'code-assistant': 'developer',
+    'commit-generator': 'developer',
+    'test-generator': 'developer',
+    'system-architect': 'developer',
+    'resume-optimizer': 'career',
+    'linkedin-enhancer': 'career',
+    'job-analyzer': 'career',
+    'mock-interview': 'career',
+    'career-roadmap': 'career',
+    'meeting-analyzer': 'enterprise',
+    'requirement-summarizer': 'enterprise',
+    'email-drafter': 'enterprise',
+    'performance-review': 'enterprise',
+    'swot-analysis': 'enterprise',
+    'study-planner': 'productivity',
+    'task-breakdown': 'productivity',
+    'budget-planner': 'productivity',
+    'itinerary-generator': 'lifestyle',
+    'healthy-habits': 'lifestyle',
+    'dashboard': 'all',
+};
 
 export type AIProvider = 'claude' | 'openai' | 'gemini' | 'openrouter';
 
@@ -99,5 +128,9 @@ export const TOOL_LABELS: Record<ToolType, string> = {
     'itinerary-generator': 'Travel Itinerary',
     'study-planner': 'Study Planner',
     'task-breakdown': 'Task Breakdown',
+    'system-architect': 'System Architect',
+    'swot-analysis': 'SWOT Analysis',
+    'healthy-habits': 'Health Coach',
+    'budget-planner': 'Budget Planner',
     'dashboard': 'Dashboard',
 };

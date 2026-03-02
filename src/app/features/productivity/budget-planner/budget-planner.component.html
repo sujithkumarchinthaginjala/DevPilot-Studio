@@ -1,0 +1,66 @@
+<div class="tool-view fade-in">
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">Smart Budget Planner</h1>
+            <p class="tool-header__desc">
+                Optimize your finances, maximize savings, and reach your goals with a personalized AI budget.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <div class="tool-panel card">
+            <div class="input-group">
+                <label class="section-label">Monthly Net Income</label>
+                <input class="input" type="number" placeholder="e.g., 5000" [ngModel]="income()"
+                    (ngModelChange)="income.set($event)" [disabled]="loading()" />
+            </div>
+
+            <div class="input-group">
+                <label class="section-label">Main Expenses & Debts</label>
+                <textarea class="textarea" placeholder="List rent, utilities, food, loan payments, etc..."
+                    [ngModel]="expenses()" (ngModelChange)="expenses.set($event)" [disabled]="loading()"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label class="section-label">Financial Goal</label>
+                <input class="input" placeholder="e.g., Save $10k for a house, Pay off credit card..."
+                    [ngModel]="financialGoal()" (ngModelChange)="financialGoal.set($event)" [disabled]="loading()" />
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="generateBudgetPlan()"
+                    [disabled]="loading() || income() <= 0">
+                    {{ loading() ? 'Calculating...' : 'Generate Budget Strategy' }}
+                </button>
+            </div>
+        </div>
+
+        <div class="tool-results" id="result-area">
+            @if (loading()) {
+            <div class="results-empty card ai-loading-card">
+                <app-loading-spinner message="Analyzing your financial flow..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">
+                        <i class="bi bi-piggy-bank"></i>
+                    </span>
+                    <h3 class="empty-state__title">Financial Freedom Starts Here</h3>
+                    <p class="empty-state__desc">
+                        Provide your income and expenses to get a detailed breakdown and optimization strategy.
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>

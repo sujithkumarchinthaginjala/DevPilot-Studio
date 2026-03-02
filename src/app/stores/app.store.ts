@@ -5,6 +5,7 @@ import {
     PromptTemplate,
     ToolUsage,
     AppPreferences,
+    ChannelType,
 } from '../core/ai/ai.model';
 import { StorageService } from '../shared/services/storage.service';
 
@@ -12,6 +13,7 @@ import { StorageService } from '../shared/services/storage.service';
 export class AppStore {
     // ── Signals ────────────────────────────────────────────────────────────────
     readonly activeTool = signal<ToolType>('dashboard');
+    readonly activeChannel = signal<ChannelType>('all');
     readonly sidebarCollapsed = signal<boolean>(false);
     readonly isLoading = signal<boolean>(false);
     readonly promptHistory = signal<PromptHistory[]>([]);
@@ -40,6 +42,11 @@ export class AppStore {
     setActiveTool(tool: ToolType): void {
         this.activeTool.set(tool);
         this.storage.set('lastActiveTool', tool);
+    }
+
+    setActiveChannel(channel: ChannelType): void {
+        this.activeChannel.set(channel);
+        this.storage.set('activeChannel', channel);
     }
 
     toggleSidebar(): void {
@@ -84,12 +91,14 @@ export class AppStore {
         const templates = this.storage.get<PromptTemplate[]>('savedTemplates', []);
         const usage = this.storage.get<ToolUsage[]>('toolUsage', []);
         const lastTool = this.storage.get<ToolType>('lastActiveTool', 'dashboard');
+        const lastChannel = this.storage.get<ChannelType>('activeChannel', 'all');
         const collapsed = this.storage.get<boolean>('sidebarCollapsed', false);
 
         this.promptHistory.set(history);
         this.savedTemplates.set(templates);
         this.toolUsage.set(usage);
         this.activeTool.set(lastTool);
+        this.activeChannel.set(lastChannel);
         this.sidebarCollapsed.set(collapsed);
     }
 

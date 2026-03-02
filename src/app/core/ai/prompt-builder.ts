@@ -125,6 +125,35 @@ export function buildItineraryGeneratorPrompt(destination: string, days: number,
     };
 }
 
+
+export function buildSystemArchitectPrompt(goal: string, requirements: string): PromptConfig {
+    return {
+        systemPrompt: `You are a senior system architect and database designer. You provide high-level architectural designs, database schemas (SQL/NoSQL), and pattern recommendations that are scalable, secure, and maintainable.`,
+        userPrompt: `Design a system architecture based on these requirements:\n\n**Goal:** ${goal}\n**Requirements:** ${requirements}\n\nProvide:\n## 🏗️ Architectural Overview\nHigh-level diagrammatic description and choice of architecture (Microservices, Monolith, etc.).\n\n## 🗄️ Database Schema\nTables/Collections design with key relationships.\n\n## 🛠️ Technology Stack Suggestions\nRecommended frontend, backend, and infrastructure components.\n\n## 🔒 Security & Scalability\nKey considerations for future growth and security.`,
+    };
+}
+
+export function buildSwotAnalysisPrompt(businessName: string, description: string): PromptConfig {
+    return {
+        systemPrompt: `You are an expert business strategist. You excel at performing SWOT (Strengths, Weaknesses, Opportunities, Threats) analyses to help businesses understand their market position and strategic direction.`,
+        userPrompt: `Perform a SWOT analysis for **${businessName}**.\n\n**Description:** ${description}\n\nProvide:\n## 💪 Strengths\nInternal positive attributes.\n\n## 📉 Weaknesses\nInternal areas for improvement.\n\n## 🚀 Opportunities\nExternal factors for growth.\n\n## ⚠️ Threats\nExternal risks and competition.\n\n## 🎯 Strategic Recommendation\n1-2 key actions based on the analysis.`,
+    };
+}
+
+export function buildHealthyHabitsPrompt(goal: string, lifestyle: string): PromptConfig {
+    return {
+        systemPrompt: `You are a wellness coach. You provide practical, sustainable, and science-backed advice on building healthy habits across nutrition, movement, and mental health.`,
+        userPrompt: `Create a personalized habit-building plan for:\n\n**Goal:** ${goal}\n**Current Lifestyle:** ${lifestyle}\n\nProvide:\n## 🥗 Nutrition & Hydration\nActionable dietary tips.\n\n## 🏃 Movement & Exercise\nDaily activity recommendations.\n\n## 🧠 Mental Wellness\nStress management and sleep habits.\n\n## ✅ 21-Day Habit Roadmap\nWeek-by-week focus to make these habits stick.`,
+    };
+}
+
+export function buildBudgetPlannerPrompt(income: number, expenses: string, financialGoal: string): PromptConfig {
+    return {
+        systemPrompt: `You are a financial planning expert. You help individuals maximize their savings, manage debt, and reach their financial goals through structured, realistic budgeting.`,
+        userPrompt: `Create a monthly budget plan based on:\n\n**Monthly Income:** ${income}\n**Current Expenses:** ${expenses}\n**Financial Goal:** ${financialGoal}\n\nProvide:\n## 📊 Recommended Budget Allocation\nBreakdown using the 50/30/20 rule or better.\n\n## 💰 Saving & Debt Strategy\nSpecific actions to reach the goal faster.\n\n## 📉 Expense Optimization\nAreas where spending can be reduced.\n\n## 🚀 Long-term Financial Path\nEstimates on when the goal will be achieved.`,
+    };
+}
+
 export function getSystemPromptForTool(tool: ToolType): string {
     const prompts: Record<ToolType, string> = {
         'code-assistant': 'You are an expert software engineer.',
@@ -142,6 +171,10 @@ export function getSystemPromptForTool(tool: ToolType): string {
         'itinerary-generator': 'You are a world-class travel planner.',
         'study-planner': 'You are a learning optimization expert.',
         'task-breakdown': 'You are an expert project manager.',
+        'system-architect': 'You are a senior system architect and database designer.',
+        'swot-analysis': 'You are an expert business strategist and SWOT analyst.',
+        'healthy-habits': 'You are a certified health coach and wellness expert.',
+        'budget-planner': 'You are a professional financial advisor and budget planner.',
         'dashboard': 'You are a helpful AI assistant.',
     };
     return prompts[tool];

@@ -1,0 +1,12 @@
+.tool-header__title {
+    background: linear-gradient(135deg, var(--accent), #818cf8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.empty-state__icon i {
+    font-size: 3rem;
+    color: var(--accent);
+    opacity: 0.5;
+}

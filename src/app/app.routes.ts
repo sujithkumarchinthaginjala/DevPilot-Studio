@@ -34,6 +34,13 @@ export const routes: Routes = [
                         (m) => m.TestGeneratorComponent
                     ),
             },
+            {
+                path: 'developer-tools/system-architect',
+                loadComponent: () =>
+                    import('./features/developer-tools/system-architect/system-architect.component').then(
+                        (m) => m.SystemArchitectComponent
+                    ),
+            },
             // Career Accelerator
             {
                 path: 'career-tools/resume-optimizer',
@@ -100,6 +107,13 @@ export const routes: Routes = [
                     ).then((m) => m.PerformanceReviewComponent),
             },
             {
+                path: 'enterprise-tools/swot-analysis',
+                loadComponent: () =>
+                    import('./features/enterprise-tools/swot-analysis/swot-analysis.component').then(
+                        (m) => m.SwotAnalysisComponent
+                    ),
+            },
+            {
                 path: 'productivity/study-planner',
                 loadComponent: () =>
                     import('./features/productivity/study-planner/study-planner.component').then(
@@ -113,12 +127,26 @@ export const routes: Routes = [
                         (m) => m.TaskBreakdownComponent
                     ),
             },
+            {
+                path: 'productivity/budget-planner',
+                loadComponent: () =>
+                    import('./features/productivity/budget-planner/budget-planner.component').then(
+                        (m) => m.BudgetPlannerComponent
+                    ),
+            },
             // Lifestyle
             {
                 path: 'lifestyle/itinerary-generator',
                 loadComponent: () =>
                     import('./features/lifestyle/itinerary-generator/itinerary-generator.component').then(
                         (m) => m.ItineraryGeneratorComponent
+                    ),
+            },
+            {
+                path: 'lifestyle/healthy-habits',
+                loadComponent: () =>
+                    import('./features/lifestyle/healthy-habits/healthy-habits.component').then(
+                        (m) => m.HealthyHabitsComponent
                     ),
             },
             { path: '**', redirectTo: 'dashboard' },

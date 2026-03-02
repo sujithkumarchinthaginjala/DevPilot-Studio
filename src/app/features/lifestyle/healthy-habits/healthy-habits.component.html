@@ -1,0 +1,62 @@
+<div class="tool-view fade-in">
+    <header class="tool-header">
+        <div class="tool-header__info">
+            <h1 class="tool-header__title">Healthy Habits Coach</h1>
+            <p class="tool-header__desc">
+                Build sustainable habits for nutrition, movement, and mental wellness.
+            </p>
+        </div>
+        <div class="tool-header__actions">
+            <button class="btn btn-ghost" (click)="clear()" [disabled]="loading()">
+                Clear
+            </button>
+        </div>
+    </header>
+
+    <div class="tool-layout">
+        <div class="tool-panel card">
+            <div class="input-group">
+                <label class="section-label">Your Goal</label>
+                <input class="input" placeholder="e.g., Run a 5k, Eat more greens, Better sleep..." [ngModel]="goal()"
+                    (ngModelChange)="goal.set($event)" [disabled]="loading()" />
+            </div>
+
+            <div class="input-group">
+                <label class="section-label">Current Lifestyle & Habits</label>
+                <textarea class="textarea"
+                    placeholder="Describe your current routine, dietary preferences, or movement levels..."
+                    [ngModel]="lifestyle()" (ngModelChange)="lifestyle.set($event)" [disabled]="loading()"></textarea>
+            </div>
+
+            <div class="panel-footer">
+                <button class="btn btn-primary btn-lg w-full" (click)="generateHabitPlan()"
+                    [disabled]="loading() || !goal().trim()">
+                    {{ loading() ? 'Coaching...' : 'Generate Habit Plan' }}
+                </button>
+            </div>
+        </div>
+
+        <div class="tool-results" id="result-area">
+            @if (loading()) {
+            <div class="results-empty card ai-loading-card">
+                <app-loading-spinner message="Crafting your wellness roadmap..."></app-loading-spinner>
+            </div>
+            } @else if (response() || error()) {
+            <app-ai-response [response]="response()" [error]="error()"></app-ai-response>
+            } @else {
+            <div class="results-empty card">
+                <div class="empty-state">
+                    <span class="empty-state__icon">
+                        <i class="bi bi-heart-pulse"></i>
+                    </span>
+                    <h3 class="empty-state__title">Start Your Journey</h3>
+                    <p class="empty-state__desc">
+                        Tell your coach what you want to achieve and your current situation to get a personalized 21-day
+                        plan.
+                    </p>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
