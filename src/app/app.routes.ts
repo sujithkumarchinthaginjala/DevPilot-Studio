@@ -77,6 +77,13 @@ export const routes: Routes = [
                         (m) => m.CareerRoadmapComponent
                     ),
             },
+            {
+                path: 'career-tools/resume-builder',
+                loadComponent: () =>
+                    import('./features/career-tools/resume-builder/resume-builder.component').then(
+                        (m) => m.ResumeBuilderComponent
+                    ),
+            },
             // Enterprise & Productivity
             {
                 path: 'enterprise-tools/meeting-analyzer',

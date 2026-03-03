@@ -51,6 +51,7 @@ export class SidebarComponent {
             channel: 'career',
             items: [
                 { icon: 'bi-file-earmark-person', label: 'Resume Optimizer', route: '/career-tools/resume-optimizer', badge: 'AI' },
+                { icon: 'bi-file-earmark-text', label: 'Resume Builder', route: '/career-tools/resume-builder', badge: 'New' },
                 { icon: 'bi-linkedin', label: 'LinkedIn Enhancer', route: '/career-tools/linkedin-enhancer', badge: 'New' },
                 { icon: 'bi-search', label: 'Job Analyzer', route: '/career-tools/job-analyzer' },
                 { icon: 'bi-chat-dots', label: 'Mock Interview', route: '/career-tools/mock-interview' },

@@ -154,6 +154,15 @@ export function buildBudgetPlannerPrompt(income: number, expenses: string, finan
     };
 }
 
+export function buildResumeBuilderPrompt(section: string, value: string): string {
+    return `As an expert resume writer, please improve the following content for the "${section}" section of a resume. Make it impactful, professional, and optimized for ATS.
+
+Content:
+${value}
+
+Please provide the improved version only, with no additional text.`;
+}
+
 export function getSystemPromptForTool(tool: ToolType): string {
     const prompts: Record<ToolType, string> = {
         'code-assistant': 'You are an expert software engineer.',
@@ -174,8 +183,9 @@ export function getSystemPromptForTool(tool: ToolType): string {
         'system-architect': 'You are a senior system architect and database designer.',
         'swot-analysis': 'You are an expert business strategist and SWOT analyst.',
         'healthy-habits': 'You are a certified health coach and wellness expert.',
-        'budget-planner': 'You are a professional financial advisor and budget planner.',
+        'budget-planner': 'You are an expert financial advisor. Provide structured budget breakdowns, saving tips, and investment advice based on the user\'s financial data.',
+        'resume-builder': 'You are a professional resume writer and career coach. Your goal is to help users craft high-impact, professional resumes that are both visually appealing and ATS-optimized.',
         'dashboard': 'You are a helpful AI assistant.',
     };
-    return prompts[tool];
+    return prompts[tool] || 'You are DevPilot AI, a helpful and intelligent productivity assistant.';
 }

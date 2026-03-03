@@ -64,6 +64,7 @@ export type ToolType =
     | 'swot-analysis'
     | 'healthy-habits'
     | 'budget-planner'
+    | 'resume-builder'
     | 'dashboard';
 
 export type ChannelType = 'all' | 'developer' | 'career' | 'enterprise' | 'productivity' | 'lifestyle';
@@ -86,6 +87,7 @@ export const TOOL_CHANNELS: Record<ToolType, ChannelType> = {
     'study-planner': 'productivity',
     'task-breakdown': 'productivity',
     'budget-planner': 'productivity',
+    'resume-builder': 'career',
     'itinerary-generator': 'lifestyle',
     'healthy-habits': 'lifestyle',
     'dashboard': 'all',
@@ -132,5 +134,6 @@ export const TOOL_LABELS: Record<ToolType, string> = {
     'swot-analysis': 'SWOT Analysis',
     'healthy-habits': 'Health Coach',
     'budget-planner': 'Budget Planner',
+    'resume-builder': 'Resume Builder',
     'dashboard': 'Dashboard',
 };
