@@ -1,34 +1,60 @@
 <div class="tool-view fade-in">
+    <!-- Onboarding: Profile Selection -->
+    @if (profileType() === 'none') {
+    <div class="onboarding-overlay no-print">
+        <div class="onboarding-card card animate-up">
+            <h1 class="onboarding-title">Choose Your Profile Type</h1>
+            <p class="onboarding-desc">We'll tailor the resume structure and section order for your career stage.</p>
+
+            <div class="profile-grid">
+                <div class="profile-option" (click)="setProfile('fresher')">
+                    <div class="profile-icon">🎓</div>
+                    <h3>Fresher / Student</h3>
+                    <p>Focus on Education, Projects & Skills</p>
+                </div>
+                <div class="profile-option" (click)="setProfile('early')">
+                    <div class="profile-icon">🚀</div>
+                    <h3>Early Professional</h3>
+                    <p>1-3 years experience. Balanced focus.</p>
+                </div>
+                <div class="profile-option" (click)="setProfile('experienced')">
+                    <div class="profile-icon">💼</div>
+                    <h3>Experienced</h3>
+                    <p>3+ years. Work impact & leadership focused.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
     <header class="tool-header no-print">
         <div class="tool-header__info">
-            <h1 class="tool-header__title">AI Resume Builder</h1>
-            <p class="tool-header__desc">
-                Create a professional, ATS-optimized resume in minutes with AI-powered content assistance.
-            </p>
+            <h1 class="tool-header__title">Adaptive AI Resume Builder</h1>
+            <div class="breadcrumb">
+                <span class="badge badge-indigo">{{ profileType() | titlecase }} Profile</span>
+            </div>
         </div>
         <div class="tool-header__actions">
-            <!-- Premium Segmented Control -->
-            <div class="segmented-control">
-                <button class="segment-btn" [class.active]="userType() === 'fresher'" (click)="setUserType('fresher')">
-                    Fresher
-                </button>
-                <button class="segment-btn" [class.active]="userType() === 'experienced'"
-                    (click)="setUserType('experienced')">
-                    Experienced
-                </button>
-                <div class="segment-indicator"
-                    [style.transform]="userType() === 'fresher' ? 'translateX(0)' : 'translateX(100%)'"></div>
+            <div class="template-selector">
+                <button class="btn btn-ghost" [class.active]="activeTemplate() === 'ats'"
+                    (click)="activeTemplate.set('ats')">ATS Friendly</button>
+                <button class="btn btn-ghost" [class.active]="activeTemplate() === 'modern'"
+                    (click)="activeTemplate.set('modern')">Modern</button>
+                <button class="btn btn-ghost" [class.active]="activeTemplate() === 'creative'"
+                    (click)="activeTemplate.set('creative')">Creative</button>
             </div>
+            <button class="btn btn-ghost" (click)="reset()">Reset</button>
         </div>
     </header>
 
     <!-- Horizontal Stepper -->
     <div class="stepper-container no-print">
         <div class="stepper-track">
-            @for (section of sections(); track section; let i = $index) {
-            <div class="step-item" [class.active]="activeSection() === section" (click)="activeSection.set(section)">
+            @for (section of sections(); track section.id; let i = $index) {
+            <div class="step-item" [class.active]="activeSectionId() === section.id"
+                (click)="activeSectionId.set(section.id)">
                 <div class="step-number">{{ i + 1 }}</div>
-                <span class="step-label">{{ section | titlecase }}</span>
+                <span class="step-label">{{ section.title }}</span>
             </div>
             @if (i < sections().length - 1) { <div class="step-connector">
         </div>
@@ -36,234 +62,277 @@
         }
     </div>
 
-    <div class="template-selector-inline">
-        <label class="section-label">Template:</label>
-        <select class="input select-sm" [ngModel]="selectedTemplate()" (ngModelChange)="selectedTemplate.set($event)">
-            @for (t of templates; track t.id) {
-            <option [value]="t.id">{{ t.name }}</option>
-            }
-        </select>
+    <button class="btn btn-ghost btn-sm" (click)="showModules = !showModules">
+        <i class="bi bi-plus-circle"></i> Add Module
+    </button>
+
+    @if (showModules) {
+    <div class="modules-popover card fade-in">
+        <h4>Add Optional Modules</h4>
+        <div class="modules-grid">
+            <button (click)="addModule('achievements'); showModules = false">🏆 Achievements</button>
+            <button (click)="addModule('certifications'); showModules = false">📜 Certifications</button>
+            <button (click)="addModule('awards'); showModules = false">🎖️ Awards</button>
+            <button (click)="addModule('leadership'); showModules = false">👔 Leadership</button>
+            <button (click)="addModule('publications'); showModules = false">📚 Publications</button>
+            <button (click)="addModule('patents'); showModules = false">💡 Patents</button>
+            <button (click)="addModule('opensource'); showModules = false">🌐 Open Source</button>
+            <button (click)="addModule('languages'); showModules = false">🗣️ Languages</button>
+        </div>
     </div>
+    }
 </div>
 
 <div class="tool-layout no-print">
     <!-- Form Panel -->
-    <div class="tool-panel card full-width-panel">
-        @if (activeSection() === 'personal') {
-        <div class="form-section fade-in">
-            <div class="input-group">
-                <label class="section-label">Full Name</label>
-                <input class="input" placeholder="e.g. John Doe" [(ngModel)]="resumeData().personal.name" />
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="input-group">
-                    <label class="section-label">Email</label>
-                    <input class="input" placeholder="john@example.com" [(ngModel)]="resumeData().personal.email" />
-                </div>
-                <div class="input-group">
-                    <label class="section-label">Phone</label>
-                    <input class="input" placeholder="+1 (555) 000-0000" [(ngModel)]="resumeData().personal.phone" />
+    <div class="tool-panel card">
+        <div class="form-container">
+            @if (activeSection; as sec) {
+            <div class="section-header-flex">
+                <h2>{{ sec.title }}</h2>
+                <div class="section-actions">
+                    @if (sec.isRemovable) {
+                    <button class="btn btn-ghost text-danger btn-sm" (click)="removeSection(sec.id)">Remove
+                        Section</button>
+                    }
                 </div>
             </div>
-            <div class="input-group">
-                <label class="section-label">LinkedIn / Website</label>
-                <input class="input" placeholder="linkedin.com/in/johndoe"
-                    [(ngModel)]="resumeData().personal.linkedin" />
-            </div>
-            <div class="input-group">
-                <div class="flex-between">
-                    <label class="section-label">Professional Summary</label>
-                    <button class="btn btn-ghost btn-sm" (click)="improveSummary()" [disabled]="loading()">
-                        {{ loading() ? 'Improving...' : '🪄 AI Improve' }}
-                    </button>
-                </div>
-                <textarea class="textarea" placeholder="Briefly describe your career goals and key strengths..."
-                    [(ngModel)]="resumeData().personal.summary"></textarea>
-            </div>
-        </div>
-        }
 
-        @if (activeSection() === 'education') {
-        <div class="form-section fade-in">
-            @for (edu of resumeData().education; track $index) {
-            <div class="dynamic-item">
+            <!-- Personal Section -->
+            @if (sec.type === 'personal') {
+            <div class="form-grid gap-6">
                 <div class="input-group">
-                    <label class="section-label">Institution</label>
-                    <input class="input" placeholder="MIT, Harvard..." [(ngModel)]="edu.institution" />
+                    <label>Full Name</label>
+                    <input class="input" [(ngModel)]="sec.data.name" placeholder="John Doe">
                 </div>
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="input-group col-span-2">
-                        <label class="section-label">Degree</label>
-                        <input class="input" placeholder="B.S. in Computer Science" [(ngModel)]="edu.degree" />
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input class="input" [(ngModel)]="sec.data.email" placeholder="john@example.com">
                     </div>
                     <div class="input-group">
-                        <label class="section-label">Year</label>
-                        <input class="input" placeholder="2024" [(ngModel)]="edu.year" />
+                        <label>Phone</label>
+                        <input class="input" [(ngModel)]="sec.data.phone" placeholder="+1 (555) 000-0000">
                     </div>
+                </div>
+                <div class="input-group">
+                    <label>LinkedIn</label>
+                    <input class="input" [(ngModel)]="sec.data.linkedin" placeholder="linkedin.com/in/johndoe">
+                </div>
+                <div class="input-group">
+                    <label>Location</label>
+                    <input class="input" [(ngModel)]="sec.data.location" placeholder="San Francisco, CA">
                 </div>
             </div>
             }
-            <button class="btn btn-ghost btn-sm" (click)="addEducation()">+ Add Education</button>
-        </div>
-        }
 
-        @if (activeSection() === 'experience') {
-        <div class="form-section fade-in">
-            @for (exp of resumeData().experience; track $index) {
-            <div class="dynamic-item">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="input-group">
-                        <label class="section-label">Company</label>
-                        <input class="input" placeholder="Google, Startup Inc..." [(ngModel)]="exp.company" />
-                    </div>
-                    <div class="input-group">
-                        <label class="section-label">Role</label>
-                        <input class="input" placeholder="Software Engineer" [(ngModel)]="exp.role" />
-                    </div>
-                </div>
+            <!-- Summary Section -->
+            @if (sec.type === 'summary') {
+            <div class="form-grid">
                 <div class="input-group">
-                    <label class="section-label">Duration</label>
-                    <input class="input" placeholder="Jan 2022 - Present" [(ngModel)]="exp.duration" />
-                </div>
-                <div class="input-group">
-                    <label class="section-label">Key Responsibilities & Impact</label>
-                    <textarea class="textarea" style="min-height: 80px;"
-                        placeholder="Describe your achievements and impact..." [(ngModel)]="exp.description"></textarea>
+                    <div class="flex-between">
+                        <label>Professional Summary</label>
+                        <button class="btn btn-ghost btn-sm" (click)="improveContent(sec.id)" [disabled]="loading()">
+                            🪄 AI Improve
+                        </button>
+                    </div>
+                    <textarea class="textarea" [(ngModel)]="sec.data.content" rows="6"></textarea>
                 </div>
             </div>
             }
-            <button class="btn btn-ghost btn-sm" (click)="addExperience()">+ Add Experience</button>
-        </div>
-        }
 
-        @if (activeSection() === 'projects') {
-        <div class="form-section fade-in">
-            @for (proj of resumeData().projects; track $index) {
-            <div class="dynamic-item">
-                <div class="input-group">
-                    <label class="section-label">Project Title</label>
-                    <input class="input" placeholder="E-commerce Fullstack App" [(ngModel)]="proj.title" />
-                </div>
-                <div class="input-group">
-                    <label class="section-label">Technologies Used</label>
-                    <input class="input" placeholder="Angular, Node.js, PostgreSQL" [(ngModel)]="proj.tech" />
-                </div>
-                <div class="input-group">
-                    <label class="section-label">Short Description</label>
-                    <textarea class="textarea" style="min-height: 80px;"
-                        placeholder="Summary of what the project does and your role..."
-                        [(ngModel)]="proj.description"></textarea>
-                </div>
-            </div>
-            }
-            <button class="btn btn-ghost btn-sm" (click)="addProject()">+ Add Project</button>
-        </div>
-        }
+            <!-- Generic List Sections (Education, Experience, Projects) -->
+            @if (sec.type === 'education' || sec.type === 'experience' || sec.type === 'projects') {
+            @for (item of sec.items; track $index) {
+            <div class="modular-card fade-in">
+                <div class="card-delete" (click)="removeSectionItem(sec.id, $index)">×</div>
 
-        @if (activeSection() === 'skills') {
-        <div class="form-section fade-in">
-            <div class="input-group">
-                <label class="section-label">Add Skills</label>
-                <div class="flex gap-2">
-                    <input class="input" placeholder="e.g. TypeScript, Cloud Architecture" [(ngModel)]="newSkill"
-                        (keyup.enter)="addSkill()" />
-                    <button class="btn btn-primary" (click)="addSkill()">Add</button>
+                @if (sec.type === 'education') {
+                <div class="form-grid">
+                    <input class="input" [(ngModel)]="item.institution" placeholder="Institution Name">
+                    <div class="form-row">
+                        <input class="input" [(ngModel)]="item.degree" placeholder="Degree (e.g. BS CS)">
+                        <input class="input" [(ngModel)]="item.year" placeholder="Year">
+                    </div>
                 </div>
-            </div>
-            <div class="skills-tag-grid">
-                @for (skill of resumeData().skills; track $index) {
-                <span class="badge badge-indigo">
-                    {{ skill }} <i class="bi bi-x cursor-pointer" (click)="removeSkill($index)"></i>
-                </span>
+                }
+
+                @if (sec.type === 'experience') {
+                <div class="form-grid">
+                    <div class="form-row">
+                        <input class="input" [(ngModel)]="item.company" placeholder="Company">
+                        <input class="input" [(ngModel)]="item.role" placeholder="Role">
+                    </div>
+                    <input class="input" [(ngModel)]="item.duration" placeholder="Dates (e.g. Jan 2020 - Present)">
+                    <div class="input-group">
+                        <div class="flex-between">
+                            <label>Description & Impact</label>
+                            <button class="btn btn-ghost btn-sm" (click)="improveContent(sec.id, $index, 'description')"
+                                [disabled]="loading()">🪄 AI Hook</button>
+                        </div>
+                        <textarea class="textarea" [(ngModel)]="item.description"
+                            placeholder="Quantify your achievements..."></textarea>
+                    </div>
+                </div>
+                }
+
+                @if (sec.type === 'projects') {
+                <div class="form-grid">
+                    <input class="input" [(ngModel)]="item.title" placeholder="Project Title">
+                    <input class="input" [(ngModel)]="item.tech" placeholder="Technologies Used">
+                    <textarea class="textarea" [(ngModel)]="item.description"
+                        placeholder="Project summary..."></textarea>
+                </div>
                 }
             </div>
+            }
+            <button class="btn btn-ghost w-full" (click)="addSectionItem(sec.id)">+ Add Item</button>
+            }
+
+            <!-- Skills Section -->
+            @if (sec.type === 'skills') {
+            <div class="skills-manager">
+                <div class="input-group">
+                    <label>Add Skill Set</label>
+                    <input class="input" #skillInput
+                        (keyup.enter)="sec.items?.push(skillInput.value); skillInput.value=''"
+                        placeholder="e.g. React, Docker, Python">
+                </div>
+                <div class="skills-flex">
+                    @for (skill of sec.items; track $index) {
+                    <span class="skill-tag">
+                        {{ skill }} <i (click)="sec.items?.splice($index, 1)">×</i>
+                    </span>
+                    }
+                </div>
+            </div>
+            }
+            }
+        </div>
+
+        <div class="panel-footer flex-between mt-8">
+            <div class="save-status" [class.show]="saveSuccess()">
+                <i class="bi bi-check-circle-fill"></i> Saved
+            </div>
+            <div class="flex gap-4">
+                <button class="btn btn-ghost" (click)="moveSection(sections().indexOf(activeSection!), 'up')">Move
+                    Up</button>
+                <button class="btn btn-ghost" (click)="moveSection(sections().indexOf(activeSection!), 'down')">Move
+                    Down</button>
+                <button class="btn btn-primary" (click)="saveResume()">Save Progress</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JD Analyzer Panel -->
+    <div class="jd-panel card">
+        <h3>Job Description Match</h3>
+        <p class="text-secondary text-sm">Paste JD to see how your resume aligns.</p>
+        <textarea class="textarea mt-4" [(ngModel)]="jdText" placeholder="Paste Job Description here..."
+            rows="8"></textarea>
+        @if (alignmentScore() !== null) {
+        <div class="score-display fade-in">
+            <div class="score-circle">
+                <span>{{ alignmentScore() }}%</span>
+            </div>
+            <p>Alignment Score</p>
         </div>
         }
-
-        <div class="panel-footer flex-between">
-            <div class="save-status" [class.show]="saveSuccess()">
-                <i class="bi bi-check-circle-fill text-success"></i> Progress Saved
-            </div>
-            <button class="btn btn-primary" (click)='saveResume()'>
-                Save Current Section
-            </button>
-        </div>
+        <button class="btn btn-accent w-full mt-4" (click)="analyzeJD()" [disabled]="loading()">
+            {{ loading() ? 'Analyzing...' : 'Analyze Match' }}
+        </button>
     </div>
 </div>
 
 <!-- Resume Preview / Print Area -->
-<div class="resume-preview-container" [class.print-mode]="true">
+<div class="resume-preview-container">
     <div class="preview-actions no-print">
         <button class="btn btn-primary btn-lg" (click)="downloadPdf()">
-            <i class="bi bi-file-earmark-pdf"></i> Download Resume as PDF
+            <i class="bi bi-file-earmark-pdf"></i> Download Resume
         </button>
     </div>
-    <div class="resume-paper" [attr.data-template]="selectedTemplate()">
-        <div class="resume-header">
-            <h1>{{ resumeData().personal.name || 'Your Name' }}</h1>
-            <div class="contact-info">
-                <span>{{ resumeData().personal.email || 'email@example.com' }}</span>
-                <span>{{ resumeData().personal.phone || 'Phone Number' }}</span>
-                <span>{{ resumeData().personal.linkedin }}</span>
-            </div>
-        </div>
 
-        <div class="resume-section">
-            <h3 class="section-title">Professional Summary</h3>
-            <p>{{ resumeData().personal.summary }}</p>
-        </div>
+    <div class="resume-paper" [attr.data-template]="activeTemplate()">
+        <!-- Template rendering is handled by CSS based on data-template attribute -->
 
-        @if (userType() === 'experienced') {
-        <div class="resume-section">
-            <h3 class="section-title">Professional Experience</h3>
-            @for (exp of resumeData().experience; track $index) {
-            <div class="resume-item">
-                <div class="resume-item__header">
-                    <strong>{{ exp.role }} | {{ exp.company }}</strong>
-                    <span>{{ exp.duration }}</span>
+        <!-- Dynamic Section Rendering in Preview -->
+        @for (sec of sections(); track sec.id) {
+        @if (sec.isVisible) {
+        <div class="resume-section" [attr.data-type]="sec.type">
+
+            @if (sec.type === 'personal') {
+            <div class="preview-header">
+                <h1>{{ sec.data.name || 'Your Name' }}</h1>
+                <div class="preview-contact">
+                    <span>{{ sec.data.email }}</span>
+                    <span>{{ sec.data.phone }}</span>
+                    <span>{{ sec.data.linkedin }}</span>
                 </div>
-                <p>{{ exp.description }}</p>
             </div>
             }
-        </div>
-        }
 
-        <div class="resume-section">
-            <h3 class="section-title">Education</h3>
-            @for (edu of resumeData().education; track $index) {
-            <div class="resume-item">
-                <div class="resume-item__header">
-                    <strong>{{ edu.degree }} | {{ edu.institution }}</strong>
-                    <span>{{ edu.year }}</span>
+            @if (sec.type === 'summary') {
+            <div class="preview-summary">
+                <h3 class="section-title">{{ sec.title }}</h3>
+                <p>{{ sec.data.content }}</p>
+            </div>
+            }
+
+            @if (sec.type === 'education') {
+            <h3 class="section-title">{{ sec.title }}</h3>
+            @for (item of sec.items; track $index) {
+            <div class="preview-item">
+                <div class="item-header">
+                    <strong>{{ item.institution }}</strong>
+                    <span>{{ item.year }}</span>
                 </div>
-                @if (userType() === 'fresher') {
-                <span>GPA: {{ edu.gpa }}</span>
+                <div class="item-sub">
+                    <span>{{ item.degree }}</span>
+                    @if (item.gpa) { <span>GPA: {{ item.gpa }}</span> }
+                </div>
+            </div>
+            }
+            }
+
+            @if (sec.type === 'experience') {
+            <h3 class="section-title">{{ sec.title }}</h3>
+            @for (item of sec.items; track $index) {
+            <div class="preview-item">
+                <div class="item-header">
+                    <strong>{{ item.role }} | {{ item.company }}</strong>
+                    <span>{{ item.duration }}</span>
+                </div>
+                <p class="item-desc">{{ item.description }}</p>
+            </div>
+            }
+            }
+
+            @if (sec.type === 'projects') {
+            <h3 class="section-title">{{ sec.title }}</h3>
+            @for (item of sec.items; track $index) {
+            <div class="preview-item">
+                <div class="item-header">
+                    <strong>{{ item.title }}</strong>
+                    <span class="tech-tag">{{ item.tech }}</span>
+                </div>
+                <p class="item-desc">{{ item.description }}</p>
+            </div>
+            }
+            }
+
+            @if (sec.type === 'skills') {
+            <h3 class="section-title">{{ sec.title }}</h3>
+            <div class="preview-skills">
+                @for (skill of sec.items; track $index) {
+                <span class="skill-pill">{{ skill }}</span>
                 }
             </div>
             }
-        </div>
 
-        @if (userType() === 'fresher') {
-        <div class="resume-section">
-            <h3 class="section-title">Key Projects</h3>
-            @for (proj of resumeData().projects; track $index) {
-            <div class="resume-item">
-                <div class="resume-item__header">
-                    <strong>{{ proj.title }}</strong>
-                    <span>{{ proj.tech }}</span>
-                </div>
-                <p>{{ proj.description }}</p>
-            </div>
-            }
+            <!-- Optional modules render similarly -->
         </div>
         }
-
-        <div class="resume-section">
-            <h3 class="section-title">Skills</h3>
-            <div class="resume-skills">
-                {{ resumeData().skills.join(', ') }}
-            </div>
-        </div>
+        }
     </div>
 </div>
 </div>
