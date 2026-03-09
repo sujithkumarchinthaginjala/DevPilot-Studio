@@ -30,8 +30,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
-    padding: var(--space-12) var(--space-10);
-    padding-bottom: var(--space-20);
+    padding: var(--space-8) 0 var(--space-20);
 }
 
 /* Subtle background pattern */

@@ -3,14 +3,6 @@
     position: relative;
 }
 
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-12);
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-}
-
 /* ============================================
    Welcome Section
    ============================================ */
