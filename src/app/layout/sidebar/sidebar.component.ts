@@ -102,8 +102,8 @@ export class SidebarComponent {
     }
 
     closeSidebar(): void {
-        // Only auto-close sidebar on mobile devices (width <= 768px)
-        if (window.innerWidth <= 768) {
+        // Auto-close sidebar on mobile/tablet devices (width <= 1024px)
+        if (window.innerWidth <= 1024) {
             this.store.sidebarCollapsed.set(true);
         }
     }

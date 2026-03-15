@@ -225,7 +225,7 @@
     padding: var(--space-3)
 }
 
-@media (max-width:768px) {
+@media (max-width:1024px) {
     .sidebar {
         position: fixed;
         left: 0;
@@ -233,7 +233,8 @@
         bottom: 0;
         box-shadow: var(--shadow-xl);
         transform: translateX(0);
-        transition: transform var(--duration-fast) var(--ease-out), width var(--duration-fast) var(--ease-out)
+        transition: transform var(--duration-fast) var(--ease-out), width var(--duration-fast) var(--ease-out);
+        z-index: 40; /* Ensure sidebar is above the backdrop */
     }
 
     .sidebar--collapsed {
@@ -249,8 +250,9 @@
         inset: 0;
         background: rgba(0, 0, 0, .6);
         backdrop-filter: blur(4px);
-        z-index: 15;
-        animation: fade-in .3s ease-out
+        z-index: 30; /* Place just below the sidebar */
+        animation: fade-in .3s ease-out;
+        cursor: pointer;
     }
 }
 
