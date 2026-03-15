@@ -50,11 +50,12 @@ export class DashboardComponent {
                     badge: 'New',
                     gradient: 'linear-gradient(135deg, #0077b5, #00a0dc)',
                 },
+
                 {
-                    icon: 'bi-chat-dots',
-                    title: 'Mock Interview',
-                    description: 'Simulate top-tier tech interviews with AI feedback.',
-                    link: '/career-tools/mock-interview',
+                    icon: 'bi-search',
+                    title: 'Job Analyzer',
+                    description: 'Deconstruct job postings and strategize your application.',
+                    link: '/career-tools/job-analyzer',
                     gradient: 'linear-gradient(135deg, #10b981, #3b82f6)',
                 },
                 {
@@ -78,11 +79,19 @@ export class DashboardComponent {
                     gradient: 'linear-gradient(135deg, #6366f1, #06b6d4)',
                 },
                 {
-                    icon: 'bi-git',
-                    title: 'Commit Generator',
-                    description: 'Smart meaningful commit messages.',
-                    link: '/developer-tools/commit-generator',
-                    gradient: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+                    icon: 'bi-funnel',
+                    title: 'Test Generator',
+                    description: 'Instantly generate comprehensive unit tests.',
+                    link: '/developer-tools/test-generator',
+                    gradient: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+                },
+                {
+                    icon: 'bi-diagram-3',
+                    title: 'System Architect',
+                    description: 'Design robust, scalable system architectures.',
+                    link: '/developer-tools/system-architect',
+                    badge: 'New',
+                    gradient: 'linear-gradient(135deg, #0ea5e9, #10b981)',
                 }
             ]
         },
@@ -103,6 +112,13 @@ export class DashboardComponent {
                     description: 'Deconstruct big goals into micro-tasks.',
                     link: '/productivity/task-breakdown',
                     gradient: 'linear-gradient(135deg, #ec4899, #f43f5e)',
+                },
+                {
+                    icon: 'bi-people',
+                    title: 'Meeting Analyzer',
+                    description: 'Extract structured insights from meeting notes.',
+                    link: '/enterprise-tools/meeting-analyzer',
+                    gradient: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
                 },
                 {
                     icon: 'bi-envelope',

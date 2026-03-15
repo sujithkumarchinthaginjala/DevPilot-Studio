@@ -20,13 +20,7 @@ export const routes: Routes = [
                         (m) => m.CodeAssistantComponent
                     ),
             },
-            {
-                path: 'developer-tools/commit-generator',
-                loadComponent: () =>
-                    import('./features/developer-tools/commit-generator/commit-generator.component').then(
-                        (m) => m.CommitGeneratorComponent
-                    ),
-            },
+
             {
                 path: 'developer-tools/test-generator',
                 loadComponent: () =>
@@ -63,13 +57,7 @@ export const routes: Routes = [
                         (m) => m.JobAnalyzerComponent
                     ),
             },
-            {
-                path: 'career-tools/mock-interview',
-                loadComponent: () =>
-                    import('./features/career-tools/mock-interview/mock-interview.component').then(
-                        (m) => m.MockInterviewComponent
-                    ),
-            },
+
             {
                 path: 'career-tools/career-roadmap',
                 loadComponent: () =>
@@ -77,13 +65,7 @@ export const routes: Routes = [
                         (m) => m.CareerRoadmapComponent
                     ),
             },
-            {
-                path: 'career-tools/resume-builder',
-                loadComponent: () =>
-                    import('./features/career-tools/resume-builder/resume-builder.component').then(
-                        (m) => m.ResumeBuilderComponent
-                    ),
-            },
+
             // Enterprise & Productivity
             {
                 path: 'enterprise-tools/meeting-analyzer',
@@ -92,13 +74,7 @@ export const routes: Routes = [
                         (m) => m.MeetingAnalyzerComponent
                     ),
             },
-            {
-                path: 'enterprise-tools/requirement-summarizer',
-                loadComponent: () =>
-                    import(
-                        './features/enterprise-tools/requirement-summarizer/requirement-summarizer.component'
-                    ).then((m) => m.RequirementSummarizerComponent),
-            },
+
             {
                 path: 'enterprise-tools/email-drafter',
                 loadComponent: () =>
@@ -106,20 +82,7 @@ export const routes: Routes = [
                         (m) => m.EmailDrafterComponent
                     ),
             },
-            {
-                path: 'enterprise-tools/performance-review',
-                loadComponent: () =>
-                    import(
-                        './features/enterprise-tools/performance-review/performance-review.component'
-                    ).then((m) => m.PerformanceReviewComponent),
-            },
-            {
-                path: 'enterprise-tools/swot-analysis',
-                loadComponent: () =>
-                    import('./features/enterprise-tools/swot-analysis/swot-analysis.component').then(
-                        (m) => m.SwotAnalysisComponent
-                    ),
-            },
+
             {
                 path: 'productivity/study-planner',
                 loadComponent: () =>
@@ -149,13 +112,7 @@ export const routes: Routes = [
                         (m) => m.ItineraryGeneratorComponent
                     ),
             },
-            {
-                path: 'lifestyle/healthy-habits',
-                loadComponent: () =>
-                    import('./features/lifestyle/healthy-habits/healthy-habits.component').then(
-                        (m) => m.HealthyHabitsComponent
-                    ),
-            },
+
             { path: '**', redirectTo: 'dashboard' },
         ],
     },

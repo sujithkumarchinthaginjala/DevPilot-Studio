@@ -18,12 +18,6 @@ export function buildCodeAssistantPrompt(code: string, mode: string): PromptConf
     };
 }
 
-export function buildCommitPrompt(changes: string): PromptConfig {
-    return {
-        systemPrompt: `You are an expert developer who writes clean, meaningful Git commit messages following the Conventional Commits specification (feat, fix, docs, style, refactor, test, chore). Keep messages concise and descriptive. Format: provide 3 commit message options ranked by appropriateness.`,
-        userPrompt: `Generate professional Git commit messages for these code changes:\n\n${changes}\n\nProvide 3 options, ranked best to good. Format each as:\n**Option 1 (Best):** \`message here\`\nBrief explanation of why this is the best choice.\n\n**Option 2:** \`message here\`\n**Option 3:** \`message here\``,
-    };
-}
 
 export function buildTestCasePrompt(code: string): PromptConfig {
     return {
@@ -39,12 +33,6 @@ export function buildMeetingAnalyzerPrompt(notes: string): PromptConfig {
     };
 }
 
-export function buildRequirementSummarizerPrompt(requirements: string): PromptConfig {
-    return {
-        systemPrompt: `You are a senior product manager and business analyst. You distill complex requirements into clear, structured summaries that both technical and non-technical stakeholders can understand.`,
-        userPrompt: `Analyze and summarize these requirements:\n\n${requirements}\n\nProvide:\n## 🎯 Core Objective\nWhat this feature/project needs to achieve.\n\n## 📌 Functional Requirements\nNumbered list of what the system must do.\n\n## 🔧 Technical Considerations\nKey technical aspects and constraints.\n\n## 🚫 Out of Scope\nWhat is explicitly excluded.\n\n## 📊 Acceptance Criteria\nHow success will be measured.\n\n## ⚡ Priority & Complexity\nEstimated priority (High/Medium/Low) and complexity (High/Medium/Low).`,
-    };
-}
 
 export function buildEmailDrafterPrompt(context: string, tone: string, purpose: string): PromptConfig {
     const toneMap: Record<string, string> = {
@@ -60,12 +48,6 @@ export function buildEmailDrafterPrompt(context: string, tone: string, purpose: 
     };
 }
 
-export function buildPerformanceReviewPrompt(context: string): PromptConfig {
-    return {
-        systemPrompt: `You are an expert HR professional and leadership coach who specializes in constructive, balanced performance reviews. You highlight strengths, provide actionable feedback, and set clear growth paths. Use specific, evidence-based language.`,
-        userPrompt: `Generate a professional performance review based on this context:\n\n${context}\n\nStructure the review as:\n## 🌟 Overall Performance Summary\nBalanced 2-3 sentence overview.\n\n## 💪 Key Strengths\nSpecific accomplishments and positive behaviors.\n\n## 📈 Areas for Growth\nConstructive areas for improvement with specific suggestions.\n\n## 🎯 Goal Achievement\nAssessment of goals met vs. missed.\n\n## 🚀 Development Plan\nActionable next steps and learning opportunities.\n\n## 📊 Rating\nOverall performance rating: Exceptional / Exceeds Expectations / Meets Expectations / Needs Improvement`,
-    };
-}
 
 /** ── Career OS New Prompts ── **/
 
@@ -90,12 +72,6 @@ export function buildJobAnalyzerPrompt(jobDescription: string, userProfile: stri
     };
 }
 
-export function buildMockInterviewPrompt(role: string, level: string, focus: string): PromptConfig {
-    return {
-        systemPrompt: `You are an expert Technical Interviewer from a top-tier tech company. You provide realistic, challenging, yet constructive interview experiences. You balance between technical depth and behavioral intelligence.`,
-        userPrompt: `Generate a set of interview questions for a **${role}** position at the **${level}** level, focusing on **${focus}**.\n\nProvide:\n## 💻 Technical Questions\n5 deep-dive technical questions relevant to the role.\n\n## 🧠 Behavioral / HR Questions\n3 specific behavioral questions (e.g., conflict, leadership, learning).\n\n## 🔑 Ideal Answer Keys\nA brief summary of what a "Great" answer looks like for each question.\n\n## 💡 Pro-Tips\nSpecific advice for succeeding in an interview for this role.`,
-    };
-}
 
 export function buildCareerRoadmapPrompt(goal: string, currentLevel: string): PromptConfig {
     return {
@@ -133,19 +109,6 @@ export function buildSystemArchitectPrompt(goal: string, requirements: string): 
     };
 }
 
-export function buildSwotAnalysisPrompt(businessName: string, description: string): PromptConfig {
-    return {
-        systemPrompt: `You are an expert business strategist. You excel at performing SWOT (Strengths, Weaknesses, Opportunities, Threats) analyses to help businesses understand their market position and strategic direction.`,
-        userPrompt: `Perform a SWOT analysis for **${businessName}**.\n\n**Description:** ${description}\n\nProvide:\n## 💪 Strengths\nInternal positive attributes.\n\n## 📉 Weaknesses\nInternal areas for improvement.\n\n## 🚀 Opportunities\nExternal factors for growth.\n\n## ⚠️ Threats\nExternal risks and competition.\n\n## 🎯 Strategic Recommendation\n1-2 key actions based on the analysis.`,
-    };
-}
-
-export function buildHealthyHabitsPrompt(goal: string, lifestyle: string): PromptConfig {
-    return {
-        systemPrompt: `You are a wellness coach. You provide practical, sustainable, and science-backed advice on building healthy habits across nutrition, movement, and mental health.`,
-        userPrompt: `Create a personalized habit-building plan for:\n\n**Goal:** ${goal}\n**Current Lifestyle:** ${lifestyle}\n\nProvide:\n## 🥗 Nutrition & Hydration\nActionable dietary tips.\n\n## 🏃 Movement & Exercise\nDaily activity recommendations.\n\n## 🧠 Mental Wellness\nStress management and sleep habits.\n\n## ✅ 21-Day Habit Roadmap\nWeek-by-week focus to make these habits stick.`,
-    };
-}
 
 export function buildBudgetPlannerPrompt(income: number, expenses: string, financialGoal: string): PromptConfig {
     return {
@@ -154,38 +117,23 @@ export function buildBudgetPlannerPrompt(income: number, expenses: string, finan
     };
 }
 
-export function buildResumeBuilderPrompt(section: string, value: string): string {
-    return `As an expert resume writer, please improve the following content for the "${section}" section of a resume. Make it impactful, professional, and optimized for ATS.
-
-Content:
-${value}
-
-Please provide the improved version only, with no additional text.`;
-}
 
 export function getSystemPromptForTool(tool: ToolType): string {
     const prompts: Record<ToolType, string> = {
         'code-assistant': 'You are an expert software engineer.',
-        'commit-generator': 'You are an expert at writing git commit messages.',
         'test-generator': 'You are an expert at writing unit tests.',
         'meeting-analyzer': 'You are an expert business analyst.',
-        'requirement-summarizer': 'You are an expert product manager.',
         'email-drafter': 'You are a professional communication expert.',
-        'performance-review': 'You are an expert HR professional.',
         'resume-optimizer': 'You are a career coach and ATS expert.',
         'linkedin-enhancer': 'You are a personal branding expert.',
         'job-analyzer': 'You are a career strategist.',
-        'mock-interview': 'You are an expert technical interviewer.',
         'career-roadmap': 'You are a professional mentor.',
         'itinerary-generator': 'You are a world-class travel planner.',
         'study-planner': 'You are a learning optimization expert.',
         'task-breakdown': 'You are an expert project manager.',
         'system-architect': 'You are a senior system architect and database designer.',
-        'swot-analysis': 'You are an expert business strategist and SWOT analyst.',
-        'healthy-habits': 'You are a certified health coach and wellness expert.',
         'budget-planner': 'You are an expert financial advisor. Provide structured budget breakdowns, saving tips, and investment advice based on the user\'s financial data.',
-        'resume-builder': 'You are a professional resume writer and career coach. Your goal is to help users craft high-impact, professional resumes that are both visually appealing and ATS-optimized.',
         'dashboard': 'You are a helpful AI assistant.',
     };
-    return prompts[tool] || 'You are DevPilot AI, a helpful and intelligent productivity assistant.';
+    return prompts[tool] || 'You are ProPilot AI, a helpful and intelligent productivity assistant.';
 }

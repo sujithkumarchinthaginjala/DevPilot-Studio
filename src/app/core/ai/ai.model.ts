@@ -46,50 +46,36 @@ export interface ToolUsage {
 
 export type ToolType =
     | 'code-assistant'
-    | 'commit-generator'
     | 'test-generator'
     | 'meeting-analyzer'
-    | 'requirement-summarizer'
     | 'email-drafter'
-    | 'performance-review'
     | 'resume-optimizer'
     | 'linkedin-enhancer'
     | 'job-analyzer'
-    | 'mock-interview'
     | 'career-roadmap'
     | 'itinerary-generator'
     | 'study-planner'
     | 'task-breakdown'
     | 'system-architect'
-    | 'swot-analysis'
-    | 'healthy-habits'
     | 'budget-planner'
-    | 'resume-builder'
     | 'dashboard';
 
 export type ChannelType = 'all' | 'developer' | 'career' | 'enterprise' | 'productivity' | 'lifestyle';
 
 export const TOOL_CHANNELS: Record<ToolType, ChannelType> = {
     'code-assistant': 'developer',
-    'commit-generator': 'developer',
     'test-generator': 'developer',
     'system-architect': 'developer',
     'resume-optimizer': 'career',
     'linkedin-enhancer': 'career',
     'job-analyzer': 'career',
-    'mock-interview': 'career',
     'career-roadmap': 'career',
     'meeting-analyzer': 'enterprise',
-    'requirement-summarizer': 'enterprise',
     'email-drafter': 'enterprise',
-    'performance-review': 'enterprise',
-    'swot-analysis': 'enterprise',
     'study-planner': 'productivity',
     'task-breakdown': 'productivity',
     'budget-planner': 'productivity',
-    'resume-builder': 'career',
     'itinerary-generator': 'lifestyle',
-    'healthy-habits': 'lifestyle',
     'dashboard': 'all',
 };
 
@@ -116,24 +102,17 @@ export interface AppPreferences {
 
 export const TOOL_LABELS: Record<ToolType, string> = {
     'code-assistant': 'Code Assistant',
-    'commit-generator': 'Commit Generator',
     'test-generator': 'Test Generator',
     'meeting-analyzer': 'Meeting Analyzer',
-    'requirement-summarizer': 'Req. Summarizer',
     'email-drafter': 'Email Drafter',
-    'performance-review': 'Perf. Review',
     'resume-optimizer': 'Resume Optimizer',
     'linkedin-enhancer': 'LinkedIn Enhancer',
     'job-analyzer': 'Job Analyzer',
-    'mock-interview': 'Mock Interview',
     'career-roadmap': 'Career Roadmap',
     'itinerary-generator': 'Travel Itinerary',
     'study-planner': 'Study Planner',
     'task-breakdown': 'Task Breakdown',
     'system-architect': 'System Architect',
-    'swot-analysis': 'SWOT Analysis',
-    'healthy-habits': 'Health Coach',
     'budget-planner': 'Budget Planner',
-    'resume-builder': 'Resume Builder',
     'dashboard': 'Dashboard',
 };

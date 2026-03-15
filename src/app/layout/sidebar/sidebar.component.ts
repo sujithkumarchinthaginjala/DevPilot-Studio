@@ -51,10 +51,8 @@ export class SidebarComponent {
             channel: 'career',
             items: [
                 { icon: 'bi-file-earmark-person', label: 'Resume Optimizer', route: '/career-tools/resume-optimizer', badge: 'AI' },
-                { icon: 'bi-file-earmark-text', label: 'Resume Builder', route: '/career-tools/resume-builder', badge: 'New' },
                 { icon: 'bi-linkedin', label: 'LinkedIn Enhancer', route: '/career-tools/linkedin-enhancer', badge: 'New' },
                 { icon: 'bi-search', label: 'Job Analyzer', route: '/career-tools/job-analyzer' },
-                { icon: 'bi-chat-dots', label: 'Mock Interview', route: '/career-tools/mock-interview' },
                 { icon: 'bi-map', label: 'Career Roadmap', route: '/career-tools/career-roadmap' },
             ],
         },
@@ -63,7 +61,6 @@ export class SidebarComponent {
             channel: 'developer',
             items: [
                 { icon: 'bi-code-slash', label: 'Code Assistant', route: '/developer-tools/code-assistant', badge: 'AI' },
-                { icon: 'bi-git', label: 'Commit Generator', route: '/developer-tools/commit-generator' },
                 { icon: 'bi-funnel', label: 'Test Generator', route: '/developer-tools/test-generator' },
                 { icon: 'bi-diagram-3', label: 'System Architect', route: '/developer-tools/system-architect', badge: 'New' },
             ],
@@ -74,9 +71,6 @@ export class SidebarComponent {
             items: [
                 { icon: 'bi-envelope', label: 'Email Drafter', route: '/enterprise-tools/email-drafter', badge: 'Pro' },
                 { icon: 'bi-people', label: 'Meeting Analyzer', route: '/enterprise-tools/meeting-analyzer' },
-                { icon: 'bi-file-earmark-text', label: 'Req. Summarizer', route: '/enterprise-tools/requirement-summarizer' },
-                { icon: 'bi-bar-chart', label: 'Perf. Review', route: '/enterprise-tools/performance-review' },
-                { icon: 'bi-grid-3x3-gap', label: 'SWOT Analysis', route: '/enterprise-tools/swot-analysis', badge: 'New' },
             ],
         },
         {
@@ -93,7 +87,6 @@ export class SidebarComponent {
             channel: 'lifestyle',
             items: [
                 { icon: 'bi-airplane', label: 'Travel Itinerary', route: '/lifestyle/itinerary-generator', badge: 'New' },
-                { icon: 'bi-heart-pulse', label: 'Health Coach', route: '/lifestyle/healthy-habits', badge: 'AI' },
             ],
         },
     ];

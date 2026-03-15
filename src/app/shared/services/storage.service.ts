@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class StorageService {
-    private prefix = 'devpilot_';
+    private prefix = 'propilot_';
 
     get<T>(key: string, defaultValue: T): T {
         try {

@@ -1,7 +1,7 @@
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
 /* ============================================
-   DevPilot Studio — Enterprise Design System
+   ProPilot AI — Enterprise Design System
    Premium Dark UI · Linear/Vercel/Raycast
    ============================================ */
 
@@ -109,7 +109,7 @@
   /* ── Layout ──────────────────────────────── */
   --sidebar-width: 260px;
   --sidebar-collapsed: 68px;
-  --header-height: 56px;
+  --header-height: 72px;
   --content-max-width: 1280px;
 }
 
@@ -289,7 +289,7 @@ select {
 
 @media (max-width: 768px) {
   .btn {
-    height: 48px;
+    /* height: 48px; */
     font-size: var(--text-base);
   }
 }

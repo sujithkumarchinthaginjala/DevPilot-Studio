@@ -3,5 +3,5 @@ export const environment = {
     geminiApiKey: 'MANAGED_BY_PROXY',
     geminiApiUrl: '/.netlify/functions/gemini-proxy',
     geminiModel: 'gemini-1.5-flash',
-    appName: 'DevPilot Studio',
+    appName: 'ProPilot AI',
 };
