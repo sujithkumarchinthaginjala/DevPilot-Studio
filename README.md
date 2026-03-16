@@ -1,4 +1,4 @@
-# DevPilot Studio
+# Propilot AI
 
 AI-powered Developer + Enterprise Command Center built with Angular 21.
 
